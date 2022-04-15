@@ -94,8 +94,9 @@ def couleurCases(matrice):
 ##### Fonctions pour la gestion des populations
 
 def tours():
-    """Fonction qui gère les tours et les conditions associées à ceux-ci"""
-    #diminuer de 1 la valeur de l'âge dans l'identité des proies et prédateurs
+    """Fonction qui gère les tours et les conditions associées à ceux-ci en appelant toutes
+    les fonctions qui gèrent les variations d'états liés aux tours"""
+    #appeler toutes les fonctions liées et voir pour le global de la matrice
     #vérifier que ça fonctionne avec des prints
     canevas.after(30, tours())
     return
@@ -175,16 +176,29 @@ def predation():
     pass
 
 
-def mortProies():
+def mortProies(matrice):
     """ Prend en argument une matrice, vérifie la durée de vie restante de toutes les proies, si elle est égale à 0,
     alors elle meurt donc l'identité de la case devient un tuple de 0"""
-    pass
+    #global matrice => un paramètre peut pas être global => voir cmt on gère le code
+    for i in range(len(matrice)):
+        for j in range(len(matrice)):
+            if matrice[i][j][1] == 0 and matrice[i][j][0] == 1: #si c'est une proie et
+                #qu'elle est trop âgée
+                matrice[i][j][0] = 0 #devient une case du décor
 
 
-def mortPrédateurs():
+def mortPrédateurs(matrice):
     """ Prend en argument une matrice, vérifie la durée de vie restante et l'énergie E_PRE de tous les prédateurs, 
     si au moins l'une des deux est égale à 0, alors il meurt donc l'identité de la case devient un tuple de 0"""
-    pass
+    #global matrice => un paramètre peut pas être global => voir cmt on gère le code
+    for i in range(len(matrice)):
+        for j in range(len(matrice)):
+            if matrice[i][j][1] == 0 and matrice[i][j][0] == 2: #si c'est un prédateur et
+                #qu'il est trop âgé
+                matrice[i][j][0] = 0 #devient une case du décor
+            elif matrice[i][j][0] == 2 and matrice[i][j][2] == 0: #si c'est un prédateur et
+                #qu'il n'a plus d'énergie
+                matrice[i][j][0] = 0 #devient une case du décor
 
 
 
