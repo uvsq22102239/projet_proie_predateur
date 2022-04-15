@@ -116,14 +116,18 @@ def naissanceAleatoireProies():
     pass
 
 
-def identiteProies():
+def identiteProies(matrice, x, y):
     """ Remplit la case de la matrice par le tuple correspondant à l'identité de la proie (son âge, etc...)"""
-    pass
+    
+    matrice[x][y] = (1, A_PRO)
 
 
-def identitePredateurs():
+
+def identitePredateurs(matrice, x, y):
     """ Remplit la case de la matrice par le tuple correspondant à l'identité du prédateur"""
-    pass
+    
+    matrice[x][y] = (2, A_PRE, E_PRE)
+
 
 
 def identitePrédateurs():
