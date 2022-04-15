@@ -129,12 +129,6 @@ def identitePredateurs(matrice, x, y):
     matrice[x][y] = (2, A_PRE, E_PRE)
 
 
-
-def identitePrédateurs():
-    """ Remplit la case de la matrice par l'identité du prédateur (son âge, etc...)"""
-    pass
-
-
 def ageProies(matrice):
     """ Prend en argument la matrice et diminue de 1 l'âge de toutes les proies"""
     
