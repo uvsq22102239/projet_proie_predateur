@@ -6,7 +6,7 @@
 
 # Projet informatique destiné à la création d'un système simulant la cohabitation de deux types de populations différentes : des proies et des prédateurs.
 
-from xml.sax import parseString
+
 
 
 https://github.com/uvsq22102239/projet_proie_predateur
