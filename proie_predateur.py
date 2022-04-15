@@ -7,12 +7,26 @@
 # Projet informatique destiné à la création d'un système simulant la cohabitation de deux types de populations différentes : des proies et des prédateurs.
 
 
-
-
-https://github.com/uvsq22102239/projet_proie_predateur
+#https://github.com/uvsq22102239/projet_proie_predateur
 ##########################################################################################################
 
+
+
+############################################
+### Import des librairies
+############################################
+
+import tkinter as tk
+
+
+############################################
 ### Définition des constantes
+############################################
+
+HAUTEUR_CANEVAS = 500
+LARGEUR_CANEVAS = 500
+NB_CASES = 30
+
 
 N_PRO = 0 #nombre de proies présentes avant le début de la simulation
 N_PRE = 0 #nombre de prédateurs disposés aléatoirement sur la grille au début de la simulation 
@@ -23,7 +37,62 @@ E_PRE = 0 #énergie que dispose un prédateur au début de sa vie
 MIAM = 0 #énergie apportée au prédateur (E_PRE) lorsqu'il mange une proie
 E_REPRO = 0 #énergie nécessaire au prédateur pour qu'il puisse se reproduire
 
-### Fonctions
+
+############################################
+### Définition des fonctions
+############################################
+
+
+
+
+############################################
+##### Fonctions en lien avec les widgets
+
+
+def creationGrille(NB_CASES):
+    """ Créer une grille carrée de NB_CASES cases de largeur"""
+
+    taille_case = LARGEUR_CANEVAS / NB_CASES
+
+    for k in range(1, (NB_CASES)):
+        # lignes verticales
+        canevas.create_line((k * taille_case), 0, (k * taille_case), HAUTEUR_CANEVAS)
+        # lignes horizontales
+        canevas.create_line(0, (k * taille_case), LARGEUR_CANEVAS, (k * taille_case))
+
+
+def coordonneesCase(ligne, colonne):
+    """ Définie les coordonnées d'une case de la grille """
+
+    taille_case = LARGEUR_CANEVAS // NB_CASES
+    
+    x0 = colonne * taille_case
+    y0 = ligne * taille_case
+    x1 = (colonne + 1) * taille_case
+    y1 = (ligne + 1) * taille_case
+
+    liste_coordonnées = [x0, y0, x1, y1]
+
+    return liste_coordonnées
+
+
+def couleurCases(matrice):
+    """ Colorie les cases de la grille en fonction de l'animal qui est dessus"""
+
+    for i in range(len(matrice)):
+        for j in range(len(matrice)):
+            case = canevas.create_rectangle(coordonneesCase(i, j), fill="black")
+            if matrice[i][j][0] == 0:
+                canevas.itemconfigure(case, fill="green yellow")
+            elif matrice[i][j][0] == 1:
+                canevas.itemconfigure(case, fill="blanched almond")
+            elif matrice[i][j][0] == 2:
+                canevas.itemconfigure(case, fill="DarkOrange1")
+
+
+############################################
+##### Fonctions pour la gestion des populations
+
 
 def apparitionProies():
     """ Fait apparaître N_PRO proies aléatoirement sur la grille (avant le 1er tour)"""
@@ -108,9 +177,26 @@ def mortPrédateurs():
 
 
 
-# Création fenêtre + canevas + grille
+############################################
+### Boucle principale
+############################################
+
+racine = tk.Tk()
+racine.title("Simulation d'un système proies/prédateurs")
+
+
+############################################
+##### Création des widgets
+
+canevas = tk.Canvas(racine, height=HAUTEUR_CANEVAS, width=LARGEUR_CANEVAS, bg='white')
+creationGrille(NB_CASES)
+
+
+############################################
+##### Placement des widgets
+
+canevas.grid(column=0, row=0)
 
 
 
-
-# Création matrice 30x30
+racine.mainloop()
