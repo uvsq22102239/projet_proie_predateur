@@ -32,7 +32,7 @@ N_PRO = 0 #nombre de proies présentes avant le début de la simulation
 N_PRE = 0 #nombre de prédateurs disposés aléatoirement sur la grille au début de la simulation 
 F_PRO = 0 #nombre de proies apparaissant aléatoirement à chaque tour
 A_PRO = 0 #durée de vie des proies
-A_PRO = 0 #durée de vie des prédateurs
+A_PRE = 0 #durée de vie des prédateurs
 E_PRE = 0 #énergie que dispose un prédateur au début de sa vie
 MIAM = 0 #énergie apportée au prédateur (E_PRE) lorsqu'il mange une proie
 E_REPRO = 0 #énergie nécessaire au prédateur pour qu'il puisse se reproduire
@@ -93,6 +93,12 @@ def couleurCases(matrice):
 ############################################
 ##### Fonctions pour la gestion des populations
 
+def tours():
+    """Fonction qui gère les tours et les conditions associées à ceux-ci"""
+    #diminuer de 1 la valeur de l'âge dans l'identité des proies et prédateurs
+    #vérifier que ça fonctionne avec des prints
+    canevas.after(30, tours())
+    return
 
 def apparitionProies():
     """ Fait apparaître N_PRO proies aléatoirement sur la grille (avant le 1er tour)"""
