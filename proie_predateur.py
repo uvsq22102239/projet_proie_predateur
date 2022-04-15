@@ -100,6 +100,7 @@ def tours():
     canevas.after(30, tours())
     return
 
+
 def apparitionProies():
     """ Fait apparaître N_PRO proies aléatoirement sur la grille (avant le 1er tour)"""
     pass
@@ -130,14 +131,24 @@ def identitePrédateurs():
     pass
 
 
-def ageProies():
+def ageProies(matrice):
     """ Prend en argument la matrice et diminue de 1 l'âge de toutes les proies"""
-    pass
+    
+    for i in range(len(matrice)):
+        for j in range(len(matrice)):
+            if matrice[i][j][0] == 1:       # si c'est une proie
+                matrice[i][j][1] -= 1       # son âge diminue de 1
 
 
-def ageEnergiePredateurs():
+
+def ageEnergiePredateurs(matrice):
     """ Prend en argument la matrice et diminue de 1 l'âge et l'énergie de tous les prédateurs"""
-    pass
+    
+    for i in range(len(matrice)):
+        for j in range(len(matrice)):
+            if matrice[i][j][0] == 2:       # si c'est un prédateur
+                matrice[i][j][1] -= 1       # son âge diminue de 1
+                matrice[i][j][2] -= 1       # son énergie diminue de 1
 
 
 def deplacementProies():
