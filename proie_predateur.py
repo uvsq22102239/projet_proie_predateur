@@ -92,7 +92,7 @@ def couleurCases(matrice):
                 canevas.itemconfigure(case, fill="DarkOrange1")
 
 
-def voisinnage(i, j, matrice):
+def voisinage(i, j, matrice):
     """ Créer une liste contenant le type des individus voisins d'un animal"""
 
     # l'ordre des voisins dans la liste est défini de gauche à droite puis de haut en bas
@@ -302,8 +302,8 @@ def reproductionProies(matrice):
     for i in range(len(matrice_proies)):
         for j in range(len(matrice_proies)):
             if matrice_proies[i][j] == (1,0) :       ## Si c'est une proie
-                voisins = voisinnage(i, j, matrice_proies)
-                voisins_vide = voisinnage(i, j, matrice)
+                voisins = voisinage(i, j, matrice_proies)
+                voisins_vide = voisinage(i, j, matrice)
                 if (1 in voisins) and (0 in voisins_vide):        
                     ## Si la proie est à côté d'une autre proie et qu'il y a une case vide pour la naissance
                     verif_naissance = 0
