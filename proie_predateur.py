@@ -63,6 +63,7 @@ def creationGrille(NB_CASES):
         canevas.create_line(0, (k * taille_case), LARGEUR_CANEVAS, (k * taille_case))
 
 
+
 def coordonneesCase(ligne, colonne):
     """ Définie les coordonnées d'une case de la grille """
 
@@ -78,6 +79,7 @@ def coordonneesCase(ligne, colonne):
     return liste_coordonnées
 
 
+
 def couleurCases(matrice):
     """ Colorie les cases de la grille en fonction de l'animal qui est dessus"""
 
@@ -90,6 +92,14 @@ def couleurCases(matrice):
                 canevas.itemconfigure(case, fill="blanched almond")
             elif matrice[i][j][0] == 2:
                 canevas.itemconfigure(case, fill="DarkOrange1")
+
+
+
+def creationMatrice(n):
+    """ Créér une matrice carrée de taille n contenant un tuple de 4 valeurs (qu'on initialise à 0)"""
+
+    return [[(0,0,0,0)]*n for i in range(n)]
+
 
 
 def voisinage(i, j, matrice):
@@ -149,6 +159,7 @@ def voisinage(i, j, matrice):
         l.append(matrice[i+1][j+1][0])
 
     return l
+
 
 
 def coordonneesVoisins(i, j, matrice):
@@ -214,13 +225,6 @@ def coordonneesVoisins(i, j, matrice):
 ############################################
 ##### Fonctions pour la gestion des populations
 
-def tours():
-    """Fonction qui gère les tours et les conditions associées à ceux-ci en appelant toutes
-    les fonctions qui gèrent les variations d'états liés aux tours"""
-    #appeler toutes les fonctions liées et voir pour le global de la matrice
-    #vérifier que ça fonctionne avec des prints
-    canevas.after(30, tours())
-    return
 
 
 def apparitionProies():
@@ -228,14 +232,17 @@ def apparitionProies():
     pass
 
 
+
 def apparitionPredateurs():
     """ Fait apparaître N_PRE prédateurs aléatoirement sur la grille (au début du 1er tour)"""
     pass
 
 
+
 def naissanceAleatoireProies():
     """ Fait apparaître F_PRO proies aléatoirement (à chaque début de tour)""" ## on considère cette fonction inutile, à voir si on la fait ou pas
     pass
+
 
 
 def identiteProies(matrice, x, y):
@@ -246,10 +253,14 @@ def identiteProies(matrice, x, y):
     return
 
 
+
 def identitePredateurs(matrice, x, y):
     """ Remplit la case de la matrice par le tuple correspondant à l'identité du prédateur"""
     
     matrice[x][y] = (2, A_PRE, E_PRE)
+
+    return
+
 
 
 def ageProies(matrice):
@@ -312,7 +323,7 @@ def reproductionProies(matrice):
                         if voisins[h] == 1:      ## Si un voisin pris au hasard est une proie, il y a reproduction
                             matrice_proies[i][j] = (0,0)        ## La proie ne peut plus se reproduire pendant ce tour          
                             coord_pro = coordonneesVoisins(i, j, matrice)
-                            matrice_proies[coord_pro[h][0]][coord_pro[h][1]] = 0
+                            matrice_proies[coord_pro[h][0]][coord_pro[h][1]] = (0,0)
                             while verif_naissance == 0:      ## Tant qu'il n'y a pas eu la naissance 
                                 k = rd.randint(0, (len(voisins_vide)-1))
                                 if voisins_vide[k] == 0:           ## Si la case choisie au hasard est vide
@@ -325,15 +336,53 @@ def reproductionProies(matrice):
 
 
 
-def reproductionPredateurs():
+def reproductionPredateurs(matrice):
     """ Si 2 prédateurs sont à côté et que leur énergie est supérieure à l'énergie nécessaire pour la reproduction
     (E_repro), alors ils se reproduisent"""
-    pass
+    
+    matrice_pred = [[(0,0,0)]*len(matrice) for b in range(len(matrice))]
+
+
+    # On commence par créer une nouvelle matrice de la même taille que la matrice d'entrée,
+    # qui contient un 1 s'il y a un prédateur, un 0 sinon (cela simplifie l'utilisation de la matrice)
+    for x in range(len(matrice_pred)):
+        for y in range(len(matrice_pred)):
+            if matrice[x][y][0] == 2:       ## Si c'est un prédateur
+                if matrice[x][y][2] >= E_REPRO:       ## S'il a une energie suffisante pour se reproduire
+                    matrice_pred[x][y] = (1,0,0)
+
+
+    # On parcourt notre matrice contenant les informations des positions des proies puis l'on regarde
+    # si une proie est à coté d'une autre ; si c'est le cas, elles se reproduisent
+    for i in range(len(matrice_pred)):
+        for j in range(len(matrice_pred)):
+            if matrice_pred[i][j] == (1,0,0) :       ## Si c'est un prédateur
+                voisins = voisinage(i, j, matrice_pred)
+                voisins_vide = voisinage(i, j, matrice)
+                if (1 in voisins) and (0 in voisins_vide):        
+                    ## Si le prédateur est à côté d'un autre prédateur et qu'il y a une case vide pour la naissance
+                    verif_naissance = 0
+                    while matrice_pred[i][j] == (1,0,0):        ## Tant que le prédateur ne s'est pas reproduit
+                        h = rd.randint(0, (len(voisins)-1))
+                        if voisins[h] == 1:      ## Si un voisin pris au hasard est aussi un prédateur, il y a reproduction
+                            matrice_pred[i][j] = (0,0,0)        ## Le prédateur ne peut plus se reproduire pendant ce tour          
+                            coord_pro = coordonneesVoisins(i, j, matrice)
+                            matrice_pred[coord_pro[h][0]][coord_pro[h][1]] = (0,0,0)          ### = 0 ?
+                            while verif_naissance == 0:      ## Tant qu'il n'y a pas eu la naissance 
+                                k = rd.randint(0, (len(voisins_vide)-1))
+                                if voisins_vide[k] == 0:           ## Si la case choisie au hasard est vide
+                                    identitePredateurs(matrice, coord_pro[k][0], coord_pro[k][1])
+                                    #matrice[coord_pro[k][0]][coord_pro[k][1]] = (1, A_PRO)
+                                    verif_naissance = 1
+
+    return matrice
+
 
 
 def predation():
     """ Si une proie et un prédateur sont sur la même case, alors la proie meure et le prédateur gagne MIAM"""
     pass
+
 
 
 def mortProies(matrice):
@@ -345,6 +394,7 @@ def mortProies(matrice):
             if matrice[i][j][1] == 0 and matrice[i][j][0] == 1: #si c'est une proie et
                 #qu'elle est trop âgée
                 matrice[i][j][0] = 0 #devient une case du décor
+
 
 
 def mortPrédateurs(matrice):
@@ -362,6 +412,13 @@ def mortPrédateurs(matrice):
 
 
 
+def tours():
+    """Fonction qui gère les tours et les conditions associées à ceux-ci en appelant toutes
+    les fonctions qui gèrent les variations d'états liés aux tours"""
+    #appeler toutes les fonctions liées et voir pour le global de la matrice
+    #vérifier que ça fonctionne avec des prints
+    canevas.after(30, tours())
+    return
 
 
 
