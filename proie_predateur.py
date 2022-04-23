@@ -227,15 +227,37 @@ def coordonneesVoisins(i, j, matrice):
 
 
 
-def apparitionProies():
-    """ Fait apparaître N_PRO proies aléatoirement sur la grille (avant le 1er tour)"""
-    pass
+def apparitionProies(matrice, n):
+    """ Fait apparaître n proies aléatoirement dans la matrice (avant le 1er tour)"""
+    
+    cpt = 0
+
+    while cpt != n:
+        i = rd.randint(0, len(matrice)-1)
+        j = rd.randint(0, len(matrice)-1)
+        # On choisit au hasard une coordonnée (i,j) où une proie apparaîtra
+        if matrice [i][j][0] == 0:        ## Si la case n'est pas déjà occupée
+            identiteProies(matrice, i, j)
+            cpt += 1
+
+    return matrice
 
 
 
-def apparitionPredateurs():
-    """ Fait apparaître N_PRE prédateurs aléatoirement sur la grille (au début du 1er tour)"""
-    pass
+def apparitionPredateurs(matrice, n):
+    """ Fait apparaître n prédateurs aléatoirement dans la matrice (au début du 1er tour)"""
+    
+    cpt = 0
+
+    while cpt != n:
+        i = rd.randint(0, len(matrice)-1)
+        j = rd.randint(0, len(matrice)-1)
+        # On choisit au hasard une coordonnée (i,j) où une proie apparaîtra
+        if matrice [i][j][0] == 0:        ## Si la case n'est pas déjà occupée
+            identitePredateurs(matrice, i, j)
+            cpt += 1
+
+    return matrice
 
 
 
@@ -248,7 +270,7 @@ def naissanceAleatoireProies():
 def identiteProies(matrice, x, y):
     """ Remplit la case de la matrice par le tuple correspondant à l'identité de la proie (son âge, etc...)"""
     
-    matrice[x][y] = (1, A_PRO)
+    matrice[x][y] = (1, A_PRO, 0)
 
     return
 
