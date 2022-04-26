@@ -30,7 +30,7 @@ LARGEUR_CANEVAS = 500
 NB_CASES = 30
 
 
-N_PRO = 0 #nombre de proies présentes avant le début de la simulation
+N_PRO = 5 #nombre de proies présentes avant le début de la simulation
 N_PRE = 0 #nombre de prédateurs disposés aléatoirement sur la grille au début de la simulation 
 F_PRO = 0 #nombre de proies apparaissant aléatoirement à chaque tour
 A_PRO = 0 #durée de vie des proies
@@ -38,6 +38,14 @@ A_PRE = 0 #durée de vie des prédateurs
 E_PRE = 0 #énergie que dispose un prédateur au début de sa vie
 MIAM = 0 #énergie apportée au prédateur (E_PRE) lorsqu'il mange une proie
 E_REPRO = 0 #énergie nécessaire au prédateur pour qu'il puisse se reproduire
+
+
+############################################
+### Définition des variables globales
+############################################
+
+global configuration_courante
+
 
 
 ############################################
@@ -49,6 +57,14 @@ E_REPRO = 0 #énergie nécessaire au prédateur pour qu'il puisse se reproduire
 
 ############################################
 ##### Fonctions en lien avec les widgets
+
+
+def fermerFenetre():
+    
+    racine.destroy()
+
+    return
+
 
 
 def creationGrille(NB_CASES):
@@ -220,6 +236,15 @@ def coordonneesVoisins(i, j, matrice):
         l.append((i+1, j+1))
 
     return l
+
+
+
+def initialisation():
+    """ Réinitialise la grille, sans animaux"""
+    
+    configuration_courante = creationMatrice(NB_CASES)
+    couleurCases(configuration_courante)
+
 
 
 ############################################
@@ -438,7 +463,13 @@ def tours():
     les fonctions qui gèrent les variations d'états liés aux tours"""
     #appeler toutes les fonctions liées et voir pour le global de la matrice
     #vérifier que ça fonctionne avec des prints
-    canevas.after(30, tours())
+
+    apparitionProies(configuration_courante, N_PRO)
+
+    couleurCases(configuration_courante)
+
+
+    #canevas.after(30, tours())
     return
 
 
@@ -451,27 +482,37 @@ def tours():
 racine = tk.Tk()
 racine.title("Simulation d'un système proies/prédateurs")
 
+configuration_courante = creationMatrice(NB_CASES)
+
+
 
 ############################################
 ##### Création des widgets
 
 canevas = tk.Canvas(racine, height=HAUTEUR_CANEVAS, width=LARGEUR_CANEVAS, bg='white')
-creationGrille(NB_CASES)
+#creationGrille(NB_CASES)
+#couleurCases(configuration_courante)
+initialisation()
 
-bouton_demarrer = tk.Button(racine, text="Démarrer la simulation")
+bouton_reinitialiser = tk.Button(racine, text="Réinitialiser", command=initialisation)
+bouton_demarrer = tk.Button(racine, text="Démarrer la simulation", command=tours)
 bouton_arreter = tk.Button(racine, text="Arrêter la simulation")
 bouton_sauvegarder = tk.Button(racine, text="Sauvegarder")
 bouton_charger = tk.Button(racine, text="Charger")
+bouton_fermer_fenetre = tk.Button(text="Fermer", command=fermerFenetre)
+
 
 ############################################
 ##### Placement des widgets
 
-canevas.grid(column=1, row=0, rowspan=4)
+canevas.grid(column=1, row=0, rowspan=6)
 
-bouton_demarrer.grid(column=0, row=0)
-bouton_arreter.grid(column=0, row=1)
-bouton_sauvegarder.grid(column=0, row=2)
-bouton_charger.grid(column=0, row=3)
+bouton_reinitialiser.grid(column=0, row=0)
+bouton_demarrer.grid(column=0, row=1)
+bouton_arreter.grid(column=0, row=2)
+bouton_sauvegarder.grid(column=0, row=3)
+bouton_charger.grid(column=0, row=4)
+bouton_fermer_fenetre.grid(column=0, row=5)
 
 
 
