@@ -458,11 +458,20 @@ racine.title("Simulation d'un système proies/prédateurs")
 canevas = tk.Canvas(racine, height=HAUTEUR_CANEVAS, width=LARGEUR_CANEVAS, bg='white')
 creationGrille(NB_CASES)
 
+bouton_demarrer = tk.Button(racine, text="Démarrer la simulation")
+bouton_arreter = tk.Button(racine, text="Arrêter la simulation")
+bouton_sauvegarder = tk.Button(racine, text="Sauvegarder")
+bouton_charger = tk.Button(racine, text="Charger")
 
 ############################################
 ##### Placement des widgets
 
-canevas.grid(column=0, row=0)
+canevas.grid(column=1, row=0, rowspan=4)
+
+bouton_demarrer.grid(column=0, row=0)
+bouton_arreter.grid(column=0, row=1)
+bouton_sauvegarder.grid(column=0, row=2)
+bouton_charger.grid(column=0, row=3)
 
 
 
