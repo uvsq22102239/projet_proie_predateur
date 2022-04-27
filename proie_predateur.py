@@ -73,6 +73,13 @@ def creationGrille(NB_CASES):
 
 
 
+def creationMatrice(n):
+    """ Créér une matrice carrée de taille n contenant un tuple de 4 valeurs (qu'on initialise à 0)"""
+
+    return [[(0,0,0,0)]*n for i in range(n)]
+
+
+
 def coordonneesCase(ligne, colonne):
     """ Définie les coordonnées d'une case de la grille """
 
@@ -104,10 +111,24 @@ def couleurCases(matrice):
 
 
 
-def creationMatrice(n):
-    """ Créér une matrice carrée de taille n contenant un tuple de 4 valeurs (qu'on initialise à 0)"""
+def initialisation():
+    """ Réinitialise la grille, sans animaux"""
+    
+    configuration_courante = creationMatrice(NB_CASES)
+    couleurCases(configuration_courante)
 
-    return [[(0,0,0,0)]*n for i in range(n)]
+
+
+def sauvegarde():
+    """Sauvegarde la configuration actuelle de la grille dans le fichier sauvegarde.txt"""
+    # vérifier que ça sauvegarde bien les modif des autres fonctions et que tout fonctionne + load
+    # fonction inspirée du cours de LSIN200N
+    fic = open("sauvegarde.txt", "w")
+    fic.write(str(NB_CASES) + ", ")
+    for i in range(NB_CASES):
+        for j in range(NB_CASES):
+            fic.write(str(configuration_courante[i][j]) + ", ")
+    fic.close()
 
 
 
@@ -232,22 +253,48 @@ def coordonneesVoisins(i, j, matrice):
 
 
 
-def initialisation():
-    """ Réinitialise la grille, sans animaux"""
-    
-    configuration_courante = creationMatrice(NB_CASES)
-    couleurCases(configuration_courante)
+def matriceProies(matrice):
+    """ Renvoie une matrice contenant la position des proies uniquement"""
 
-def sauvegarde():
-    """Sauvegarde la configuration actuelle de la grille dans le fichier sauvegarde.txt"""
-    # vérifier que ça sauvegarde bien les modif des autres fonctions et que tout fonctionne + load
-    # fonction inspirée du cours de LSIN200N
-    fic = open("sauvegarde.txt", "w")
-    fic.write(str(NB_CASES) + ", ")
-    for i in range(NB_CASES):
-        for j in range(NB_CASES):
-            fic.write(str(configuration_courante[i][j]) + ", ")
-    fic.close()
+    matrice_proies = [[(0,0)]*len(matrice) for b in range(len(matrice))]
+
+    for x in range(len(matrice_proies)):
+        for y in range(len(matrice_proies)):
+            if matrice[x][y][0] == 1:       ## Si c'est une proie
+                matrice_proies[x][y] = (1,0)
+
+    return matrice_proies
+
+
+
+def matricePredateurs(matrice):
+    """ Renvoie une matrice contenant la position des prédateurs uniquement"""
+
+    matrice_predateurs = [[(0,0)]*len(matrice) for b in range(len(matrice))]
+
+    for x in range(len(matrice_predateurs)):
+        for y in range(len(matrice_predateurs)):
+            if matrice[x][y][0] == 2:       ## Si c'est un prédateur
+                matrice_predateurs[x][y] = (1,0)
+
+    return matrice_predateurs
+
+
+
+def matricePredateursEnergie(matrice):
+    """ Même principe que la fonction 'matricePredateurs' mais ne laisse apparaître
+    uniquement les proies ayant une énergie suffisante pour se reproduire"""
+
+    matrice_predateurs = [[(0,0)]*len(matrice) for b in range(len(matrice))]
+
+    for x in range(len(matrice_predateurs)):
+        for y in range(len(matrice_predateurs)):
+            if matrice[x][y][0] == 2:       ## Si c'est un prédateur
+                if matrice[x][y][2] >= E_REPRO:       ## S'il a une energie suffisante pour se reproduire
+                    matrice_predateurs[x][y] = (1,0,0)
+
+    return matrice_predateurs
+
 
 
 ############################################
@@ -347,15 +394,7 @@ def reproductionProies(matrice):
     """ Si 2 proies sont à côté, alors elles se reproduisent (on décide que les proies ne 
     peuvent se reproduire au maximum qu'une seule fois par tour)"""
     
-    matrice_proies = [[(0,0)]*len(matrice) for b in range(len(matrice))]
-
-
-    # On commence par créer une nouvelle matrice de la même taille que la matrice d'entrée,
-    # qui contient un 1 s'il y a une proie, un 0 sinon (cela simplifie l'utilisation de la matrice)
-    for x in range(len(matrice_proies)):
-        for y in range(len(matrice_proies)):
-            if matrice[x][y][0] == 1:       ## Si c'est une proie
-                matrice_proies[x][y] = (1,0)
+    matrice_proies = matriceProies(matrice)
 
 
     # On parcourt notre matrice contenant les informations des positions des proies puis l'on regarde
@@ -390,16 +429,7 @@ def reproductionPredateurs(matrice):
     """ Si 2 prédateurs sont à côté et que leur énergie est supérieure à l'énergie nécessaire pour la reproduction
     (E_repro), alors ils se reproduisent"""
     
-    matrice_pred = [[(0,0,0)]*len(matrice) for b in range(len(matrice))]
-
-
-    # On commence par créer une nouvelle matrice de la même taille que la matrice d'entrée,
-    # qui contient un 1 s'il y a un prédateur, un 0 sinon (cela simplifie l'utilisation de la matrice)
-    for x in range(len(matrice_pred)):
-        for y in range(len(matrice_pred)):
-            if matrice[x][y][0] == 2:       ## Si c'est un prédateur
-                if matrice[x][y][2] >= E_REPRO:       ## S'il a une energie suffisante pour se reproduire
-                    matrice_pred[x][y] = (1,0,0)
+    matrice_pred = matricePredateursEnergie(matrice)
 
 
     # On parcourt notre matrice contenant les informations des positions des proies puis l'on regarde
