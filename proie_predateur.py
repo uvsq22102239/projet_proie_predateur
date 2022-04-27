@@ -76,7 +76,7 @@ def creationGrille(NB_CASES):
 def creationMatrice(n):
     """ Créér une matrice carrée de taille n contenant un tuple de 4 valeurs (qu'on initialise à 0)"""
 
-    return [[(0,0,0,0)]*n for i in range(n)]
+    return [[(0,0,0)]*n for i in range(n)]
 
 
 
@@ -459,9 +459,15 @@ def reproductionPredateurs(matrice):
 
 
 
-def predation():
+def predation(matrice):
     """ Si une proie et un prédateur sont sur la même case, alors la proie meure et le prédateur gagne MIAM"""
-    pass
+    
+    for i in range(len(matrice)):
+        for j in range(len(matrice)):
+            if matrice[i][j][0] == 3:       ## Si une proie et un prédateur se retrouvent sur la même case
+                matrice[i][j] = (2, matrice[i][j][1], (matrice[i][j][2] + MIAM))
+    
+    return matrice
 
 
 
