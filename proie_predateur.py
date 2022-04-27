@@ -238,6 +238,16 @@ def initialisation():
     configuration_courante = creationMatrice(NB_CASES)
     couleurCases(configuration_courante)
 
+def sauvegarde():
+    """Sauvegarde la configuration actuelle de la grille dans le fichier sauvegarde.txt"""
+    # vérifier que ça sauvegarde bien les modif des autres fonctions et que tout fonctionne + load
+    # fonction inspirée du cours de LSIN200N
+    fic = open("sauvegarde.txt", "w")
+    fic.write(str(NB_CASES) + ", ")
+    for i in range(NB_CASES):
+        for j in range(NB_CASES):
+            fic.write(str(configuration_courante[i][j]) + ", ")
+    fic.close()
 
 
 ############################################
@@ -490,7 +500,7 @@ initialisation()
 bouton_reinitialiser = tk.Button(racine, text="Réinitialiser", command=initialisation)
 bouton_demarrer = tk.Button(racine, text="Démarrer la simulation", command=tours)
 bouton_arreter = tk.Button(racine, text="Arrêter la simulation")
-bouton_sauvegarder = tk.Button(racine, text="Sauvegarder")
+bouton_sauvegarder = tk.Button(racine, text="Sauvegarder", command = sauvegarde)
 bouton_charger = tk.Button(racine, text="Charger")
 bouton_fermer_fenetre = tk.Button(text="Fermer", command=racine.destroy)
 
