@@ -59,13 +59,6 @@ global configuration_courante
 ##### Fonctions en lien avec les widgets
 
 
-def fermerFenetre():
-    
-    racine.destroy()
-
-    return
-
-
 
 def creationGrille(NB_CASES):
     """ Créer une grille carrée de NB_CASES cases de largeur"""
@@ -499,7 +492,7 @@ bouton_demarrer = tk.Button(racine, text="Démarrer la simulation", command=tour
 bouton_arreter = tk.Button(racine, text="Arrêter la simulation")
 bouton_sauvegarder = tk.Button(racine, text="Sauvegarder")
 bouton_charger = tk.Button(racine, text="Charger")
-bouton_fermer_fenetre = tk.Button(text="Fermer", command=fermerFenetre)
+bouton_fermer_fenetre = tk.Button(text="Fermer", command=racine.destroy)
 
 
 ############################################
