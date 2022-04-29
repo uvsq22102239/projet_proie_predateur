@@ -366,7 +366,7 @@ def ageProies(matrice):
     for i in range(len(matrice)):
         for j in range(len(matrice)):
             if matrice[i][j][0] == 1:       # si c'est une proie
-                matrice[i][j][1] = matrice[i][j][1] - 1       # son âge diminue de 1
+                matrice[i][j] = (matrice[i][j][0],(matrice[i][j][1] - 1),matrice[i][j][2])       # son âge diminue de 1
 
 
 
@@ -376,8 +376,8 @@ def ageEnergiePredateurs(matrice):
     for i in range(len(matrice)):
         for j in range(len(matrice)):
             if matrice[i][j][0] == 2:       # si c'est un prédateur
-                matrice[i][j][1] -= 1       # son âge diminue de 1
-                matrice[i][j][2] -= 1       # son énergie diminue de 1
+                matrice[i][j] = (matrice[i][j][0],(matrice[i][j][1] - 1),matrice[i][j][2])       # son âge diminue de 1
+                matrice[i][j] = (matrice[i][j][0],matrice[i][j][1],(matrice[i][j][2]-1))       # son énergie diminue de 1
 
 
 
