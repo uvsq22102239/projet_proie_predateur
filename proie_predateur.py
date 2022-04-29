@@ -44,7 +44,8 @@ E_REPRO = 0 #énergie nécessaire au prédateur pour qu'il puisse se reproduire
 ### Définition des variables globales
 ############################################
 
-global configuration_courante
+#global configuration_courante
+est_arrete = False
 
 
 
@@ -120,15 +121,46 @@ def initialisation():
 
 
 def sauvegarde():
-    """Sauvegarde la configuration actuelle de la grille dans le fichier sauvegarde.txt"""
+    """Sauvegarde la configuration actuelle de la grille correspondant à la simulation et la taille de celle-ci dans le fichier sauvegarde.txt"""
     # vérifier que ça sauvegarde bien les modif des autres fonctions et que tout fonctionne + load
-    # fonction inspirée du cours de LSIN200N
+    # fonction récupéré du cours de LSIN200N et adaptée au programme
     fic = open("sauvegarde.txt", "w")
     fic.write(str(NB_CASES) + ", ")
     for i in range(NB_CASES):
         for j in range(NB_CASES):
             fic.write(str(configuration_courante[i][j]) + ", ")
     fic.close()
+
+def charger():
+    """Lit la configuration sauvegardée et la retourne si
+    elle a même valeur NB_CASES que la config courante, sinon retourne config vide"""
+    #fonction récupérée du cours de LSIN200N et adaptée au programme
+    fic = open("sauvegarde", "r")
+    config = [[0 for i in range(NB_CASES+2)] for j in range(NB_CASES+2)]
+    ligne = fic.readline()
+    n = int(ligne)
+    if n != NB_CASES:
+        fic.close()
+        return config
+    i = j = 1
+    for ligne in fic:
+        config[i][j] = int(ligne)
+        j += 1
+        if j == NB_CASES + 1:
+            j = 1
+            i += 1
+    fic.close()
+    return config
+
+def charger_gestion_bouton(matrice):
+    """Modifie la config courante à partir de la config sauvegardée"""
+    #fonction récupérée du cours de LSIN200N et adaptée au programme
+    #global configuration_courante si on utilise configuration_courante et modif
+    for i in range(len(matrice)):
+        for j in range(len(matrice)):
+            matrice[i][j] = charger()
+    tours()
+
 
 
 
@@ -545,30 +577,40 @@ def mortPrédateurs(matrice):
 def tours():
     """Fonction qui gère les tours et les conditions associées à ceux-ci en appelant toutes
     les fonctions qui gèrent les variations d'états liés aux tours"""
-
+    global est_arrete
 
     apparitionProies(configuration_courante, N_PRO)     # /!\ A n'utiliser qu'une seule fois, au début de la partie
                                                         # => besoin voir comment on gère cette fonction
-    deplacementProies(configuration_courante)
-    predation(configuration_courante)
-    deplacementPredateurs(configuration_courante)
-    predation(configuration_courante)       # on appelle la fonction 2 fois car on considère que dès qu'un
-                                            # prédateur se trouve sur la même case qu'une proie, il la mange
-    reproductionProies(configuration_courante)
-    reproductionPredateurs(configuration_courante)      # pas besoin de rappeler la fonction prédation car les
+    if est_arrete == False:
+        deplacementProies(configuration_courante)
+        predation(configuration_courante)
+        deplacementPredateurs(configuration_courante)
+        predation(configuration_courante)       # on appelle la fonction 2 fois car on considère que dès qu'un
+                                                # prédateur se trouve sur la même case qu'une proie, il la mange
+        reproductionProies(configuration_courante)
+        reproductionPredateurs(configuration_courante)      # pas besoin de rappeler la fonction prédation car les
                                                         # naissances se font sur les cases vides
-    ageProies(configuration_courante)
-    ageEnergiePredateurs(configuration_courante)
-
-    mortProies(configuration_courante)
-    mortPrédateurs(configuration_courante)
-
-
-    couleurCases(configuration_courante)
+        ageProies(configuration_courante)
+        ageEnergiePredateurs(configuration_courante)
+        mortProies(configuration_courante)
+        mortPrédateurs(configuration_courante)
+        
+        couleurCases(configuration_courante)
+    else:
+        pass
 
 
     #canevas.after(30, tours())
     return
+
+def arreter():
+    """Arrête la simulutation ou la relancer"""
+    global est_arrete
+    if est_arrete == False:
+        est_arrete = True
+    else:
+        est_arrete = False
+        tours()
 
 
 
@@ -594,9 +636,9 @@ initialisation()
 
 bouton_reinitialiser = tk.Button(racine, text="Réinitialiser", command=initialisation)
 bouton_demarrer = tk.Button(racine, text="Démarrer la simulation", command=tours)
-bouton_arreter = tk.Button(racine, text="Arrêter la simulation")
+bouton_arreter = tk.Button(racine, text="Arrêter/relancer la simulation", command = arreter)
 bouton_sauvegarder = tk.Button(racine, text="Sauvegarder", command = sauvegarde)
-bouton_charger = tk.Button(racine, text="Charger")
+bouton_charger = tk.Button(racine, text="Charger", command = charger_gestion_bouton)
 bouton_fermer_fenetre = tk.Button(text="Fermer", command=racine.destroy)
 
 
