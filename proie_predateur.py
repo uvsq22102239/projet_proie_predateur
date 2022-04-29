@@ -380,9 +380,32 @@ def ageEnergiePredateurs(matrice):
                 matrice[i][j][2] -= 1       # son énergie diminue de 1
 
 
-def deplacementProies():
+
+def deplacementProies(matrice):
     """ Fait bouger toutes les proies"""
-    pass
+
+
+    for i in range(len(matrice)):
+        for j in range(len(matrice)):
+            if matrice[i][j][0] == 1:    ## Si c'est une proie
+                voisins = voisinage(i,j,matrice)
+                coord_voisins = coordonneesVoisins(i,j,matrice)
+                if (0 in voisins) or (2 in voisins) :
+                    while matrice[i][j][0] != 0:     ## Tant que l'animal n'a pas bougé
+                        k = rd.randint(0, (len(voisins)-1))
+                        if voisins[k] == 0:
+                            i_arrivee = coord_voisins[k][0]
+                            j_arrivee = coord_voisins[k][1]
+                            matrice[i_arrivee][j_arrivee] = matrice[i][j]
+                            matrice[i][j] = (0,0,0)
+                        elif voisins[k] == 2:
+                            i_arrivee = coord_voisins[k][0]
+                            j_arrivee = coord_voisins[k][1]
+                            matrice[i_arrivee][j_arrivee] = (3,matrice[i_arrivee][j_arrivee][1],matrice[i_arrivee][j_arrivee][2])
+                            matrice[i][j] = (0,0,0)                                                       
+    
+    return matrice
+
 
 
 def deplacementPredateurs():
