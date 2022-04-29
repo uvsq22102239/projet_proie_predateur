@@ -408,9 +408,31 @@ def deplacementProies(matrice):
 
 
 
-def deplacementPredateurs():
+def deplacementPredateurs(matrice):
     """ Fait bouger tous les prédateurs"""
-    pass
+    
+
+    for i in range(len(matrice)):
+        for j in range(len(matrice)):
+            if matrice[i][j][0] == 2:    ## Si c'est un prédateur
+                voisins = voisinage(i,j,matrice)
+                coord_voisins = coordonneesVoisins(i,j,matrice)
+                if (0 in voisins) or (2 in voisins) :
+                    while matrice[i][j][0] != 0:     ## Tant que l'animal n'a pas bougé
+                        k = rd.randint(0, (len(voisins)-1))
+                        if voisins[k] == 0:
+                            i_arrivee = coord_voisins[k][0]
+                            j_arrivee = coord_voisins[k][1]
+                            matrice[i_arrivee][j_arrivee] = matrice[i][j]
+                            matrice[i][j] = (0,0,0)
+                        elif voisins[k] == 1:
+                            i_arrivee = coord_voisins[k][0]
+                            j_arrivee = coord_voisins[k][1]
+                            matrice[i_arrivee][j_arrivee] = (3,matrice[i][j][1],matrice[i][j][2])
+                            matrice[i][j] = (0,0,0)                                                       
+        
+    return matrice
+
 
 
 def reproductionProies(matrice):
@@ -523,10 +545,24 @@ def mortPrédateurs(matrice):
 def tours():
     """Fonction qui gère les tours et les conditions associées à ceux-ci en appelant toutes
     les fonctions qui gèrent les variations d'états liés aux tours"""
-    #appeler toutes les fonctions liées et voir pour le global de la matrice
-    #vérifier que ça fonctionne avec des prints
 
-    apparitionProies(configuration_courante, N_PRO)
+
+    apparitionProies(configuration_courante, N_PRO)     # /!\ A n'utiliser qu'une seule fois, au début de la partie
+                                                        # => besoin voir comment on gère cette fonction
+    deplacementProies(configuration_courante)
+    predation(configuration_courante)
+    deplacementPredateurs(configuration_courante)
+    predation(configuration_courante)       # on appelle la fonction 2 fois car on considère que dès qu'un
+                                            # prédateur se trouve sur la même case qu'une proie, il la mange
+    reproductionProies(configuration_courante)
+    reproductionPredateurs(configuration_courante)      # pas besoin de rappeler la fonction prédation car les
+                                                        # naissances se font sur les cases vides
+    ageProies(configuration_courante)
+    ageEnergiePredateurs(configuration_courante)
+
+    mortProies(configuration_courante)
+    mortPrédateurs(configuration_courante)
+
 
     couleurCases(configuration_courante)
 
