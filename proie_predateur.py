@@ -44,10 +44,12 @@ E_REPRO = 0 #énergie nécessaire au prédateur pour qu'il puisse se reproduire
 ### Définition des variables globales
 ############################################
 
-#global configuration_courante
+global configuration_courante
+
 est_arrete = False
 
-
+cpt_tours = 0
+global cpt_tours
 
 ############################################
 ### Définition des fonctions
@@ -131,6 +133,8 @@ def sauvegarde():
             fic.write(str(configuration_courante[i][j]) + ", ")
     fic.close()
 
+
+
 def charger():
     """Lit la configuration sauvegardée et la retourne si
     elle a même valeur NB_CASES que la config courante, sinon retourne config vide"""
@@ -152,6 +156,8 @@ def charger():
     fic.close()
     return config
 
+
+
 def charger_gestion_bouton(matrice):
     """Modifie la config courante à partir de la config sauvegardée"""
     #fonction récupérée du cours de LSIN200N et adaptée au programme
@@ -160,7 +166,6 @@ def charger_gestion_bouton(matrice):
         for j in range(len(matrice)):
             matrice[i][j] = charger()
     tours()
-
 
 
 
@@ -577,11 +582,16 @@ def mortPrédateurs(matrice):
 def tours():
     """Fonction qui gère les tours et les conditions associées à ceux-ci en appelant toutes
     les fonctions qui gèrent les variations d'états liés aux tours"""
-    global est_arrete
 
-    apparitionProies(configuration_courante, N_PRO)     # /!\ A n'utiliser qu'une seule fois, au début de la partie
-                                                        # => besoin voir comment on gère cette fonction
-    if est_arrete == False:
+    global est_arrete
+    global cpt_tours
+
+    if cpt_tours == 0:
+        apparitionProies(configuration_courante, N_PRO)
+        apparitionPredateurs(configuration_courante, N_PRE)
+    
+    if est_arrete == False :
+
         deplacementProies(configuration_courante)
         predation(configuration_courante)
         deplacementPredateurs(configuration_courante)
@@ -589,29 +599,32 @@ def tours():
                                                 # prédateur se trouve sur la même case qu'une proie, il la mange
         reproductionProies(configuration_courante)
         reproductionPredateurs(configuration_courante)      # pas besoin de rappeler la fonction prédation car les
-                                                        # naissances se font sur les cases vides
+                                                            # naissances se font sur les cases vides
         ageProies(configuration_courante)
         ageEnergiePredateurs(configuration_courante)
+
         mortProies(configuration_courante)
         mortPrédateurs(configuration_courante)
-        
+
+
         couleurCases(configuration_courante)
-    else:
-        pass
 
+        cpt_tours += 1
+    #else:
 
-    #canevas.after(30, tours())
-    return
+        #canevas.after(30, tours())
+    
+    #return
+
 
 def arreter():
-    """Arrête la simulutation ou la relancer"""
+    """Arrêter la simulutation ou la relancer"""
     global est_arrete
     if est_arrete == False:
         est_arrete = True
     else:
         est_arrete = False
         tours()
-
 
 
 
