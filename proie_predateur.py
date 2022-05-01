@@ -117,9 +117,12 @@ def couleurCases(matrice):
 def initialisation():
     """ Réinitialise la grille, sans animaux"""
     
+    global cpt_tours
+    global configuration_courante
+
     configuration_courante = creationMatrice(NB_CASES)
     couleurCases(configuration_courante)
-
+    cpt_tours = 0
 
 
 def sauvegarde():
@@ -585,6 +588,7 @@ def tours():
 
     global est_arrete
     global cpt_tours
+    global configuration_courante
 
 
     if cpt_tours == 0:
@@ -613,7 +617,7 @@ def tours():
         cpt_tours += 1
     #else:
 
-        #canevas.after(30, tours())
+    #canevas.after(30, tours())
     
     #return
 
