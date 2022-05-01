@@ -30,14 +30,14 @@ LARGEUR_CANEVAS = 500
 NB_CASES = 30
 
 
-N_PRO = 5 #nombre de proies présentes avant le début de la simulation
-N_PRE = 0 #nombre de prédateurs disposés aléatoirement sur la grille au début de la simulation 
+N_PRO = 30 #nombre de proies présentes avant le début de la simulation
+N_PRE = 20 #nombre de prédateurs disposés aléatoirement sur la grille au début de la simulation 
 F_PRO = 0 #nombre de proies apparaissant aléatoirement à chaque tour
-A_PRO = 0 #durée de vie des proies
-A_PRE = 0 #durée de vie des prédateurs
-E_PRE = 0 #énergie que dispose un prédateur au début de sa vie
-MIAM = 0 #énergie apportée au prédateur (E_PRE) lorsqu'il mange une proie
-E_REPRO = 0 #énergie nécessaire au prédateur pour qu'il puisse se reproduire
+A_PRO = 7 #durée de vie des proies
+A_PRE = 10 #durée de vie des prédateurs
+E_PRE = 6 #énergie que dispose un prédateur au début de sa vie
+MIAM = 3 #énergie apportée au prédateur (E_PRE) lorsqu'il mange une proie
+E_REPRO = 7 #énergie nécessaire au prédateur pour qu'il puisse se reproduire
 
 
 ############################################
@@ -561,7 +561,7 @@ def mortProies(matrice):
         for j in range(len(matrice)):
             if matrice[i][j][0] == 1 and matrice[i][j][1] == 0: #si c'est une proie et
                 #qu'elle est trop âgée
-                matrice[i][j][0] = 0 #devient une case du décor
+                matrice[i][j] = (0,0,0) #devient une case du décor
 
 
 
@@ -573,9 +573,9 @@ def mortPrédateurs(matrice):
         for j in range(len(matrice)):
             if matrice[i][j][0] == 2: #s'il s'agit un prédateur
                 if matrice[i][j][1] == 0: #s'il est trop âgé
-                    matrice[i][j][0] = 0 #devient une case du décor
+                    matrice[i][j] = (0,0,0) #devient une case du décor
                 elif matrice[i][j][2] == 0: #s'il n'a plus d'énergie
-                    matrice[i][j][0] = 0 #devient une case du décor
+                    matrice[i][j] = (0,0,0) #devient une case du décor
 
 
 
