@@ -48,8 +48,8 @@ global configuration_courante
 
 est_arrete = False
 
-cpt_tours = 0
 global cpt_tours
+cpt_tours = 0
 
 ############################################
 ### Définition des fonctions
@@ -585,6 +585,7 @@ def tours():
 
     global est_arrete
     global cpt_tours
+
 
     if cpt_tours == 0:
         apparitionProies(configuration_courante, N_PRO)
