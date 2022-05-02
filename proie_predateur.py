@@ -33,11 +33,11 @@ NB_CASES = 30
 N_PRO = 30 #nombre de proies présentes avant le début de la simulation
 N_PRE = 20 #nombre de prédateurs disposés aléatoirement sur la grille au début de la simulation 
 F_PRO = 0 #nombre de proies apparaissant aléatoirement à chaque tour
-A_PRO = 7 #durée de vie des proies
-A_PRE = 10 #durée de vie des prédateurs
-E_PRE = 6 #énergie que dispose un prédateur au début de sa vie
-MIAM = 3 #énergie apportée au prédateur (E_PRE) lorsqu'il mange une proie
-E_REPRO = 7 #énergie nécessaire au prédateur pour qu'il puisse se reproduire
+A_PRO = 6 #durée de vie des proies
+A_PRE = 15 #durée de vie des prédateurs
+E_PRE = 10 #énergie que dispose un prédateur au début de sa vie
+MIAM = 4 #énergie apportée au prédateur (E_PRE) lorsqu'il mange une proie
+E_REPRO = 11 #énergie nécessaire au prédateur pour qu'il puisse se reproduire
 
 
 ############################################
@@ -591,11 +591,11 @@ def tours():
     global configuration_courante
 
 
-    if cpt_tours == 0:
-        apparitionProies(configuration_courante, N_PRO)
-        apparitionPredateurs(configuration_courante, N_PRE)
-    
     if est_arrete == False :
+        if cpt_tours == 0:
+            apparitionProies(configuration_courante, N_PRO)
+            apparitionPredateurs(configuration_courante, N_PRE)
+
 
         deplacementProies(configuration_courante)
         predation(configuration_courante)
