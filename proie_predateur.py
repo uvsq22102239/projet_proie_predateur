@@ -1,20 +1,22 @@
-##########################################################################################################
+#############################################################################
 # groupe LDDBI L1
 # Lucas AUCLAIR
 # Camille LE CORRE
 # Nikita Vershynin
 
-# Projet informatique destiné à la création d'un système simulant la cohabitation de deux types de 
-# populations différentes : des proies et des prédateurs.
+
+# Projet informatique destiné à la création d'un système
+# simulant la cohabitation de deux types de populations
+# # différentes : des proies et des prédateurs.
 
 
-#https://github.com/uvsq22102239/projet_proie_predateur
-##########################################################################################################
+# https://github.com/uvsq22102239/projet_proie_predateur
+#############################################################################
 
 
 
 ############################################
-### Import des librairies
+# Import des librairies
 ############################################
 
 import tkinter as tk
@@ -22,7 +24,7 @@ import tkinter as tk
 import random as rd
 
 ############################################
-### Définition des constantes
+# Définition des constantes
 ############################################
 
 HAUTEUR_CANEVAS = 500
@@ -30,18 +32,27 @@ LARGEUR_CANEVAS = 500
 NB_CASES = 30
 
 
-N_PRO = 30 #nombre de proies présentes avant le début de la simulation
-N_PRE = 20 #nombre de prédateurs disposés aléatoirement sur la grille au début de la simulation 
-F_PRO = 0 #nombre de proies apparaissant aléatoirement à chaque tour
-A_PRO = 6 #durée de vie des proies
-A_PRE = 15 #durée de vie des prédateurs
-E_PRE = 10 #énergie que dispose un prédateur au début de sa vie
-MIAM = 4 #énergie apportée au prédateur (E_PRE) lorsqu'il mange une proie
-E_REPRO = 11 #énergie nécessaire au prédateur pour qu'il puisse se reproduire
+N_PRO = 30
+# nombre de proies présentes avant le début de la simulation
+N_PRE = 20
+# nombre de prédateurs disposés aléatoirement sur la grille au début
+# de la simulation 
+F_PRO = 0
+# nombre de proies apparaissant aléatoirement à chaque tour
+A_PRO = 6
+# durée de vie des proies
+A_PRE = 15
+# durée de vie des prédateurs
+E_PRE = 10
+# énergie que dispose un prédateur au début de sa vie
+MIAM = 4
+# énergie apportée au prédateur (E_PRE) lorsqu'il mange une proie
+E_REPRO = 11
+# énergie nécessaire au prédateur pour qu'il puisse se reproduire
 
 
 ############################################
-### Définition des variables globales
+# Définition des variables globales
 ############################################
 
 global configuration_courante
@@ -52,21 +63,17 @@ global cpt_tours
 cpt_tours = 0
 
 ############################################
-### Définition des fonctions
+# Définition des fonctions
 ############################################
 
-
-
 ############################################
-##### Fonctions en lien avec les widgets
-
-
+# Fonctions en lien avec les widgets
 
 def creationMatrice(n):
-    """ Créér une matrice carrée de taille n contenant un tuple de 4 valeurs (qu'on initialise à 0)"""
+    """ Créér une matrice carrée de taille n contenant un tuple de 4 
+    valeurs (qu'on initialise à 0)"""
 
     return [[(0,0,0)]*n for i in range(n)]
-
 
 
 def coordonneesCase(ligne, colonne):
@@ -84,9 +91,9 @@ def coordonneesCase(ligne, colonne):
     return liste_coordonnées
 
 
-
 def couleurCases(matrice):
-    """ Colorie les cases de la grille en fonction de l'animal qui est dessus"""
+    """ Colorie les cases de la grille en fonction de 
+    l'animal qui est dessus"""
 
     # vert : case vide (prairie)
     # beige : proie (lapin)
@@ -103,10 +110,9 @@ def couleurCases(matrice):
                 canevas.itemconfigure(case, fill="DarkOrange1")
 
 
-
 def initialisation():
     """ Réinitialise la grille, sans animaux"""
-    
+
     global cpt_tours
     global configuration_courante
 
@@ -130,14 +136,14 @@ def sauvegarde():
     fic.close()
 
 
-
 def charger():
-    """ Lit la configuration sauvegardée et la retourne si elle a même valeur NB_CASES
-    que la configuration courante, sinon retourne configuration vide"""
-    #fonction récupérée du cours de LSIN200N et adaptée au programme
+    """ Lit la configuration sauvegardée et la retourne si elle a la même valeur
+    NB_CASES que la configuration courante, sinon retourne configuration vide """
+    # fonction récupérée du cours de LSIN200N et adaptée au programme
 
     fic = open("sauvegarde.txt", "r")
-    config = [[0 for i in range(NB_CASES+3)] for j in range(NB_CASES+3)] #à mieux adapter au programme
+    config = [[0 for i in range(NB_CASES+3)] for j in range(NB_CASES+3)] 
+    # à mieux adapter au programme
     ligne = fic.readline()
     n = int(ligne)
     if n != NB_CASES:
@@ -145,7 +151,8 @@ def charger():
         return config
     i = j = 1
     for ligne in fic:
-        config[i][j] = int(ligne)#erreur de int à solutionner
+        config[i][j] = int(ligne) 
+        # erreur de int à solutionner
         j += 1
         if j == NB_CASES + 1:
             j = 1
@@ -154,11 +161,11 @@ def charger():
     return config
 
 
-
 def charger_gestion_bouton(matrice):
-    """Modifie la configuration courante à partir de la configuration sauvegardée"""
-    #fonction récupérée du cours de LSIN200N et adaptée au programme
-    #voir sinon avec configuration_courante et global
+    """Modifie la configuration courante à partir de la 
+    configuration sauvegardée"""
+    # fonction récupérée du cours de LSIN200N et adaptée au programme
+    # voir sinon avec configuration_courante et global
 
     for i in range(len(matrice)):
         for j in range(len(matrice)):
@@ -166,70 +173,67 @@ def charger_gestion_bouton(matrice):
     tours()
 
 
-
 def voisinage(i, j, matrice):
     """ Créer une liste contenant le type des individus voisins d'un animal"""
 
     # l'ordre des voisins dans la liste est défini de gauche à droite puis de haut en bas
-    l = []
+    li = []
 
-    if i==0 and j==0 :
-        l.append(matrice[i][j+1][0])
-        l.append(matrice[i+1][j][0])
-        l.append(matrice[i+1][j+1][0])
-    elif i==0 and (j==len(matrice)-1):
-        l.append(matrice[i][j-1][0])
-        l.append(matrice[i+1][j-1][0])
-        l.append(matrice[i+1][j][0])
-    elif (i==len(matrice)-1) and j==0:
-        l.append(matrice[i-1][j][0])
-        l.append(matrice[i-1][j+1][0])
-        l.append(matrice[i][j+1][0])
-    elif (i==len(matrice)-1) and (j==len(matrice)-1):
-        l.append(matrice[i-1][j-1][0])
-        l.append(matrice[i-1][j][0])
-        l.append(matrice[i][j-1][0])
-    elif i==0 and 0<j<(len(matrice)-1):
-        l.append(matrice[i][j-1][0])
-        l.append(matrice[i][j+1][0])
-        l.append(matrice[i+1][j-1][0])
-        l.append(matrice[i+1][j][0])
-        l.append(matrice[i+1][j+1][0])
-    elif (i==len(matrice)-1) and 0<j<(len(matrice)-1):
-        l.append(matrice[i-1][j-1][0])
-        l.append(matrice[i-1][j][0])
-        l.append(matrice[i-1][j+1][0])
-        l.append(matrice[i][j-1][0])
-        l.append(matrice[i][j+1][0])
-    elif (0<i<(len(matrice)-1) and j==0):
-        l.append(matrice[i-1][j][0])
-        l.append(matrice[i-1][j+1][0])
-        l.append(matrice[i][j+1][0])
-        l.append(matrice[i+1][j][0])
-        l.append(matrice[i+1][j+1][0])
-    elif 0<i<(len(matrice)-1) and j==(len(matrice)-1):
-        l.append(matrice[i-1][j-1][0])
-        l.append(matrice[i-1][j][0])
-        l.append(matrice[i][j-1][0])
-        l.append(matrice[i+1][j-1][0])
-        l.append(matrice[i+1][j][0])
-    else :
-        l.append(matrice[i-1][j-1][0])
-        l.append(matrice[i-1][j][0])
-        l.append(matrice[i-1][j+1][0])
-        l.append(matrice[i][j-1][0])
-        l.append(matrice[i][j+1][0])
-        l.append(matrice[i+1][j-1][0])
-        l.append(matrice[i+1][j][0])
-        l.append(matrice[i+1][j+1][0])
+    if i == 0 and j == 0:
+        li.append(matrice[i][j+1][0])
+        li.append(matrice[i+1][j][0])
+        li.append(matrice[i+1][j+1][0])
+    elif i == 0 and (j == len(matrice)-1):
+        li.append(matrice[i][j-1][0])
+        li.append(matrice[i+1][j-1][0])
+        li.append(matrice[i+1][j][0])
+    elif (i == len(matrice)-1) and j == 0:
+        li.append(matrice[i-1][j][0])
+        li.append(matrice[i-1][j+1][0])
+        li.append(matrice[i][j+1][0])
+    elif (i == len(matrice)-1) and (j == len(matrice)-1):
+        li.append(matrice[i-1][j-1][0])
+        li.append(matrice[i-1][j][0])
+        li.append(matrice[i][j-1][0])
+    elif i == 0 and 0 < j < (len(matrice)-1):
+        li.append(matrice[i][j-1][0])
+        li.append(matrice[i][j+1][0])
+        li.append(matrice[i+1][j-1][0])
+        li.append(matrice[i+1][j][0])
+        li.append(matrice[i+1][j+1][0])
+    elif (i == len(matrice)-1) and 0 < j < (len(matrice)-1):
+        li.append(matrice[i-1][j-1][0])
+        li.append(matrice[i-1][j][0])
+        li.append(matrice[i-1][j+1][0])
+        li.append(matrice[i][j-1][0])
+        li.append(matrice[i][j+1][0])
+    elif (0 < i < (len(matrice)-1) and j == 0):
+        li.append(matrice[i-1][j][0])
+        li.append(matrice[i-1][j+1][0])
+        li.append(matrice[i][j+1][0])
+        li.append(matrice[i+1][j][0])
+        li.append(matrice[i+1][j+1][0])
+    elif 0 < i < (len(matrice)-1) and j == (len(matrice)-1):
+        li.append(matrice[i-1][j-1][0])
+        li.append(matrice[i-1][j][0])
+        li.append(matrice[i][j-1][0])
+        li.append(matrice[i+1][j-1][0])
+        li.append(matrice[i+1][j][0])
+    else:
+        li.append(matrice[i-1][j-1][0])
+        li.append(matrice[i-1][j][0])
+        li.append(matrice[i-1][j+1][0])
+        li.append(matrice[i][j-1][0])
+        li.append(matrice[i][j+1][0])
+        li.append(matrice[i+1][j-1][0])
+        li.append(matrice[i+1][j][0])
+        li.append(matrice[i+1][j+1][0])
 
-    return l
-
+    return li
 
 
 def coordonneesVoisins(i, j, matrice):
     """ Créer une liste contenant les coordonnées des cases voisines d'une case"""
-
     # l'ordre des voisins dans la liste est défini de gauche à droite puis de haut en bas
 
     l = []
@@ -268,13 +272,13 @@ def coordonneesVoisins(i, j, matrice):
         l.append((i, j+1))
         l.append((i+1, j))
         l.append((i+1, j+1))
-    elif 0<i<(len(matrice)-1) and j==(len(matrice)-1):
+    elif 0 < i < (len(matrice)-1) and j == (len(matrice)-1):
         l.append((i-1, j-1))
         l.append((i-1, j))
         l.append((i, j-1))
         l.append((i+1, j-1))
         l.append((i+1, j))
-    else :
+    else:
         l.append((i-1, j-1))
         l.append((i-1, j))
         l.append((i-1, j+1))
@@ -285,57 +289,54 @@ def coordonneesVoisins(i, j, matrice):
         l.append((i+1, j+1))
 
     return l
-
 
 
 def matriceProies(matrice):
     """ Renvoie une matrice contenant la position des proies uniquement"""
 
-    matrice_proies = [[(0,0)]*len(matrice) for b in range(len(matrice))]
+    matrice_proies = [[(0, 0)]*len(matrice) for b in range(len(matrice))]
 
     for x in range(len(matrice_proies)):
         for y in range(len(matrice_proies)):
-            if matrice[x][y][0] == 1:       ## Si c'est une proie
-                matrice_proies[x][y] = (1,0)
+            if matrice[x][y][0] == 1:
+                # Si c'est une proie
+                matrice_proies[x][y] = (1, 0)
 
     return matrice_proies
-
 
 
 def matricePredateurs(matrice):
     """ Renvoie une matrice contenant la position des prédateurs uniquement"""
 
-    matrice_predateurs = [[(0,0)]*len(matrice) for b in range(len(matrice))]
+    matrice_predateurs = [[(0, 0)]*len(matrice) for b in range(len(matrice))]
 
     for x in range(len(matrice_predateurs)):
         for y in range(len(matrice_predateurs)):
-            if matrice[x][y][0] == 2:       ## Si c'est un prédateur
-                matrice_predateurs[x][y] = (1,0)
+            if matrice[x][y][0] == 2:
+                # Si c'est un prédateur
+                matrice_predateurs[x][y] = (1, 0)
 
     return matrice_predateurs
-
 
 
 def matricePredateursEnergie(matrice):
     """ Même principe que la fonction 'matricePredateurs' mais ne laisse apparaître
     uniquement les proies ayant une énergie suffisante pour se reproduire"""
 
-    matrice_predateurs = [[(0,0)]*len(matrice) for b in range(len(matrice))]
+    matrice_predateurs = [[(0, 0)]*len(matrice) for b in range(len(matrice))]
 
     for x in range(len(matrice_predateurs)):
         for y in range(len(matrice_predateurs)):
-            if matrice[x][y][0] == 2:       ## Si c'est un prédateur
-                if matrice[x][y][2] >= E_REPRO:       ## S'il a une energie suffisante pour se reproduire
-                    matrice_predateurs[x][y] = (1,0,0)
+            if matrice[x][y][0] == 2:
+                # Si c'est un prédateur
+                if matrice[x][y][2] >= E_REPRO:
+                    # S'il a une energie suffisante pour se reproduire
+                    matrice_predateurs[x][y] = (1,  0,0)
 
     return matrice_predateurs
 
-
-
 ############################################
-##### Fonctions pour la gestion des populations
-
-
+# Fonctions pour la gestion des populations
 
 def apparitionProies(matrice, n):
     """ Fait apparaître n proies aléatoirement dans la matrice (avant le 1er tour)"""
@@ -346,12 +347,12 @@ def apparitionProies(matrice, n):
         i = rd.randint(0, len(matrice)-1)
         j = rd.randint(0, len(matrice)-1)
         # On choisit au hasard une coordonnée (i,j) où une proie apparaîtra
-        if matrice [i][j][0] == 0:        ## Si la case n'est pas déjà occupée
+        if matrice [i][j][0] == 0:
+            # Si la case n'est pas déjà occupée
             identiteProies(matrice, i, j)
             cpt += 1
 
     return matrice
-
 
 
 def apparitionPredateurs(matrice, n):
@@ -363,47 +364,48 @@ def apparitionPredateurs(matrice, n):
         i = rd.randint(0, len(matrice)-1)
         j = rd.randint(0, len(matrice)-1)
         # On choisit au hasard une coordonnée (i,j) où une proie apparaîtra
-        if matrice [i][j][0] == 0:        ## Si la case n'est pas déjà occupée
+        if matrice [i][j][0] == 0:
+            # Si la case n'est pas déjà occupée
             identitePredateurs(matrice, i, j)
             cpt += 1
 
     return matrice
 
 
-
 def naissanceAleatoireProies():
-    """ Fait apparaître F_PRO proies aléatoirement (à chaque début de tour)""" ## on considère cette fonction inutile, à voir si on la fait ou pas
+    """ Fait apparaître F_PRO proies aléatoirement (à chaque début de tour)"""
+    # on considère cette fonction inutile, à voir si on la fait ou pas
     pass
 
 
-
 def identiteProies(matrice, x, y):
-    """ Remplit la case de la matrice par le tuple correspondant à l'identité de la proie (son identifiant et son âge)"""
-    
+    """ Remplit la case de la matrice par le tuple correspondant à 
+    l'identité de la proie (son identifiant et son âge)"""
+
     matrice[x][y] = (1, A_PRO, 0)
 
     return
 
 
-
 def identitePredateurs(matrice, x, y):
-    """ Remplit la case de la matrice par le tuple correspondant à l'identité du prédateur
-    (son identifiant, son âge et son énergie)"""
-    
+    """ Remplit la case de la matrice par le tuple correspondant à 
+    l'identité du prédateur (son identifiant, son âge et son énergie)"""
+
     matrice[x][y] = (2, A_PRE, E_PRE)
 
     return
 
 
-
 def ageProies(matrice):
-    """ Prend en argument la matrice et diminue de 1 l'âge de toutes les proies"""
-    
+    """ Prend en argument la matrice et diminue de 1 l'âge 
+    de toutes les proies"""
+
     for i in range(len(matrice)):
         for j in range(len(matrice)):
-            if matrice[i][j][0] == 1:       # si c'est une proie
-                matrice[i][j] = (matrice[i][j][0],(matrice[i][j][1] - 1),matrice[i][j][2])       # son âge diminue de 1
-
+            if matrice[i][j][0] == 1:       
+            # si c'est une proie
+                matrice[i][j] = (matrice[i][j][0],(matrice[i][j][1] - 1),matrice[i][j][2])       
+                # son âge diminue de 1
 
 
 def ageEnergiePredateurs(matrice):
@@ -411,23 +413,26 @@ def ageEnergiePredateurs(matrice):
     
     for i in range(len(matrice)):
         for j in range(len(matrice)):
-            if matrice[i][j][0] == 2:       # si c'est un prédateur
-                matrice[i][j] = (matrice[i][j][0],(matrice[i][j][1] - 1),matrice[i][j][2])       # son âge diminue de 1
-                matrice[i][j] = (matrice[i][j][0],matrice[i][j][1],(matrice[i][j][2]-1))       # son énergie diminue de 1
-
+            if matrice[i][j][0] == 2:       
+                # si c'est un prédateur
+                matrice[i][j] = (matrice[i][j][0],(matrice[i][j][1] - 1),matrice[i][j][2])       
+                # son âge diminue de 1
+                matrice[i][j] = (matrice[i][j][0],matrice[i][j][1],(matrice[i][j][2]-1))       
+                # son énergie diminue de 1
 
 
 def deplacementProies(matrice):
     """ Fait bouger toutes les proies"""
 
-
     for i in range(len(matrice)):
         for j in range(len(matrice)):
-            if matrice[i][j][0] == 1:    ## Si c'est une proie
+            if matrice[i][j][0] == 1:
+                # Si c'est une proie
                 voisins = voisinage(i,j,matrice)
                 coord_voisins = coordonneesVoisins(i,j,matrice)
                 if (0 in voisins) or (2 in voisins) :
-                    while matrice[i][j][0] != 0:     ## Tant que l'animal n'a pas bougé
+                    while matrice[i][j][0] != 0:
+                        # Tant que l'animal n'a pas bougé
                         k = rd.randint(0, (len(voisins)-1))
                         if voisins[k] == 0:
                             i_arrivee = coord_voisins[k][0]
@@ -443,18 +448,18 @@ def deplacementProies(matrice):
     return matrice
 
 
-
 def deplacementPredateurs(matrice):
     """ Fait bouger tous les prédateurs"""
-    
 
     for i in range(len(matrice)):
         for j in range(len(matrice)):
-            if matrice[i][j][0] == 2:    ## Si c'est un prédateur
+            if matrice[i][j][0] == 2:
+                # Si c'est un prédateur
                 voisins = voisinage(i,j,matrice)
                 coord_voisins = coordonneesVoisins(i,j,matrice)
                 if (0 in voisins) or (2 in voisins) :
-                    while matrice[i][j][0] != 0:     ## Tant que l'animal n'a pas bougé
+                    while matrice[i][j][0] != 0:
+                        # Tant que l'animal n'a pas bougé
                         k = rd.randint(0, (len(voisins)-1))
                         if voisins[k] == 0:
                             i_arrivee = coord_voisins[k][0]
