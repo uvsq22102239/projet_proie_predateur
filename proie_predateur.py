@@ -4,7 +4,8 @@
 # Camille LE CORRE
 # Nikita Vershynin
 
-# Projet informatique destiné à la création d'un système simulant la cohabitation de deux types de populations différentes : des proies et des prédateurs.
+# Projet informatique destiné à la création d'un système simulant la cohabitation de deux types de 
+# populations différentes : des proies et des prédateurs.
 
 
 #https://github.com/uvsq22102239/projet_proie_predateur
@@ -19,7 +20,6 @@
 import tkinter as tk
 
 import random as rd
-
 
 ############################################
 ### Définition des constantes
@@ -57,22 +57,8 @@ cpt_tours = 0
 
 
 
-
 ############################################
 ##### Fonctions en lien avec les widgets
-
-
-
-def creationGrille(NB_CASES):
-    """ Créer une grille carrée de NB_CASES cases de largeur"""
-
-    taille_case = LARGEUR_CANEVAS / NB_CASES
-
-    for k in range(1, (NB_CASES)):
-        # lignes verticales
-        canevas.create_line((k * taille_case), 0, (k * taille_case), HAUTEUR_CANEVAS)
-        # lignes horizontales
-        canevas.create_line(0, (k * taille_case), LARGEUR_CANEVAS, (k * taille_case))
 
 
 
@@ -102,6 +88,10 @@ def coordonneesCase(ligne, colonne):
 def couleurCases(matrice):
     """ Colorie les cases de la grille en fonction de l'animal qui est dessus"""
 
+    # vert : case vide (prairie)
+    # beige : proie (lapin)
+    # orange : prédateur (renard) 
+
     for i in range(len(matrice)):
         for j in range(len(matrice)):
             case = canevas.create_rectangle(coordonneesCase(i, j), fill="black")
@@ -126,9 +116,12 @@ def initialisation():
 
 
 def sauvegarde():
-    """Sauvegarde la configuration actuelle de la grille correspondant à la simulation et la taille de celle-ci dans le fichier sauvegarde.txt"""
+    """Sauvegarde la configuration actuelle de la grille correspondant à la
+    simulation et la taille de celle-ci dans le fichier sauvegarde.txt"""
+
     # vérifier que ça sauvegarde bien les modif des autres fonctions et que tout fonctionne + load
     # fonction récupéré du cours de LSIN200N et adaptée au programme
+
     fic = open("sauvegarde.txt", "w")
     fic.write(str(NB_CASES) + "\n")
     for i in range(NB_CASES):
@@ -139,9 +132,10 @@ def sauvegarde():
 
 
 def charger():
-    """Lit la configuration sauvegardée et la retourne si
-    elle a même valeur NB_CASES que la config courante, sinon retourne config vide"""
+    """ Lit la configuration sauvegardée et la retourne si elle a même valeur NB_CASES
+    que la configuration courante, sinon retourne configuration vide"""
     #fonction récupérée du cours de LSIN200N et adaptée au programme
+
     fic = open("sauvegarde.txt", "r")
     config = [[0 for i in range(NB_CASES+3)] for j in range(NB_CASES+3)] #à mieux adapter au programme
     ligne = fic.readline()
@@ -162,9 +156,10 @@ def charger():
 
 
 def charger_gestion_bouton(matrice):
-    """Modifie la config courante à partir de la config sauvegardée"""
+    """Modifie la configuration courante à partir de la configuration sauvegardée"""
     #fonction récupérée du cours de LSIN200N et adaptée au programme
     #voir sinon avec configuration_courante et global
+
     for i in range(len(matrice)):
         for j in range(len(matrice)):
             matrice[i][j] = charger()
@@ -233,10 +228,10 @@ def voisinage(i, j, matrice):
 
 
 def coordonneesVoisins(i, j, matrice):
-
     """ Créer une liste contenant les coordonnées des cases voisines d'une case"""
 
     # l'ordre des voisins dans la liste est défini de gauche à droite puis de haut en bas
+
     l = []
 
     if i==0 and j==0 :
@@ -383,7 +378,7 @@ def naissanceAleatoireProies():
 
 
 def identiteProies(matrice, x, y):
-    """ Remplit la case de la matrice par le tuple correspondant à l'identité de la proie (son âge, etc...)"""
+    """ Remplit la case de la matrice par le tuple correspondant à l'identité de la proie (son identifiant et son âge)"""
     
     matrice[x][y] = (1, A_PRO, 0)
 
@@ -392,7 +387,8 @@ def identiteProies(matrice, x, y):
 
 
 def identitePredateurs(matrice, x, y):
-    """ Remplit la case de la matrice par le tuple correspondant à l'identité du prédateur"""
+    """ Remplit la case de la matrice par le tuple correspondant à l'identité du prédateur
+    (son identifiant, son âge et son énergie)"""
     
     matrice[x][y] = (2, A_PRE, E_PRE)
 
@@ -481,7 +477,6 @@ def reproductionProies(matrice):
     
     matrice_proies = matriceProies(matrice)
 
-
     # On parcourt notre matrice contenant les informations des positions des proies puis l'on regarde
     # si une proie est à coté d'une autre ; si c'est le cas, elles se reproduisent
     for i in range(len(matrice_proies)):
@@ -516,7 +511,6 @@ def reproductionPredateurs(matrice):
     
     matrice_pred = matricePredateursEnergie(matrice)
 
-
     # On parcourt notre matrice contenant les informations des positions des proies puis l'on regarde
     # si une proie est à coté d'une autre ; si c'est le cas, elles se reproduisent
     for i in range(len(matrice_pred)):
@@ -537,7 +531,6 @@ def reproductionPredateurs(matrice):
                                 k = rd.randint(0, (len(voisins_vide)-1))
                                 if voisins_vide[k] == 0:           ## Si la case choisie au hasard est vide
                                     identitePredateurs(matrice, coord_pro[k][0], coord_pro[k][1])
-                                    #matrice[coord_pro[k][0]][coord_pro[k][1]] = (1, A_PRO)
                                     verif_naissance = 1
 
     return matrice
@@ -559,19 +552,20 @@ def predation(matrice):
 def mortProies(matrice):
     """ Prend en argument une matrice, vérifie la durée de vie restante de toutes les proies, si elle est égale à 0,
     alors elle meurt donc l'identité de la case devient un tuple de 0"""
-    #global matrice => un paramètre peut pas être global => voir cmt on gère le code
+
     for i in range(len(matrice)):
         for j in range(len(matrice)):
             if matrice[i][j][0] == 1 and matrice[i][j][1] == 0: #si c'est une proie et
                 #qu'elle est trop âgée
                 matrice[i][j] = (0,0,0) #devient une case du décor
-
+    
+    return matrice
 
 
 def mortPrédateurs(matrice):
     """ Prend en argument une matrice, vérifie la durée de vie restante et l'énergie E_PRE de tous les prédateurs, 
     si au moins l'une des deux est égale à 0, alors il meurt donc l'identité de la case devient un tuple de 0"""
-    #global matrice => un paramètre peut pas être global => voir cmt on gère le code
+
     for i in range(len(matrice)):
         for j in range(len(matrice)):
             if matrice[i][j][0] == 2: #s'il s'agit un prédateur
@@ -580,6 +574,7 @@ def mortPrédateurs(matrice):
                 elif matrice[i][j][2] == 0: #s'il n'a plus d'énergie
                     matrice[i][j] = (0,0,0) #devient une case du décor
 
+    return matrice
 
 
 def tours():
@@ -648,8 +643,6 @@ configuration_courante = creationMatrice(NB_CASES)
 ##### Création des widgets
 
 canevas = tk.Canvas(racine, height=HAUTEUR_CANEVAS, width=LARGEUR_CANEVAS, bg='white')
-#creationGrille(NB_CASES)
-#couleurCases(configuration_courante)
 initialisation()
 
 bouton_reinitialiser = tk.Button(racine, text="Réinitialiser", command=initialisation)
