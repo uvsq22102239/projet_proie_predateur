@@ -130,10 +130,10 @@ def sauvegarde():
     # vérifier que ça sauvegarde bien les modif des autres fonctions et que tout fonctionne + load
     # fonction récupéré du cours de LSIN200N et adaptée au programme
     fic = open("sauvegarde.txt", "w")
-    fic.write(str(NB_CASES) + ", ")
+    fic.write(str(NB_CASES) + "\n")
     for i in range(NB_CASES):
         for j in range(NB_CASES):
-            fic.write(str(configuration_courante[i][j]) + ", ")
+            fic.write(str(configuration_courante[i][j]) + "\n")
     fic.close()
 
 
@@ -142,8 +142,8 @@ def charger():
     """Lit la configuration sauvegardée et la retourne si
     elle a même valeur NB_CASES que la config courante, sinon retourne config vide"""
     #fonction récupérée du cours de LSIN200N et adaptée au programme
-    fic = open("sauvegarde", "r")
-    config = [[0 for i in range(NB_CASES+2)] for j in range(NB_CASES+2)]
+    fic = open("sauvegarde.txt", "r")
+    config = [[0 for i in range(NB_CASES+3)] for j in range(NB_CASES+3)] #à mieux adapter au programme
     ligne = fic.readline()
     n = int(ligne)
     if n != NB_CASES:
@@ -151,7 +151,7 @@ def charger():
         return config
     i = j = 1
     for ligne in fic:
-        config[i][j] = int(ligne)
+        config[i][j] = int(ligne)#erreur de int à solutionner
         j += 1
         if j == NB_CASES + 1:
             j = 1
@@ -164,7 +164,7 @@ def charger():
 def charger_gestion_bouton(matrice):
     """Modifie la config courante à partir de la config sauvegardée"""
     #fonction récupérée du cours de LSIN200N et adaptée au programme
-    #global configuration_courante si on utilise configuration_courante et modif
+    #voir sinon avec configuration_courante et global
     for i in range(len(matrice)):
         for j in range(len(matrice)):
             matrice[i][j] = charger()
