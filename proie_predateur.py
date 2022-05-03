@@ -122,6 +122,28 @@ def initialisation():
     cpt_tours = 0
 
 
+def demarrer():
+    """ Démarre la simulation"""
+
+    global est_arrete
+
+    est_arrete = False
+
+    tours()
+
+
+def arreter():
+    """Arrêter la simulation ou la relancer"""
+
+    global est_arrete
+
+    if est_arrete is False:
+        est_arrete = True
+    else:
+        est_arrete = False
+        tours()
+
+
 def sauvegarde():
     """Sauvegarde la configuration actuelle de la grille correspondant à la
     simulation et la taille de celle-ci dans le fichier sauvegarde.txt"""
@@ -676,17 +698,6 @@ def tours():
         return
 
 
-def arreter():
-    """Arrêter la simulation ou la relancer"""
-
-    global est_arrete
-
-    if est_arrete is False:
-        est_arrete = True
-    else:
-        est_arrete = False
-        tours()
-
 ############################################
 # Boucle principale
 ############################################
@@ -708,7 +719,7 @@ initialisation()
 bouton_reinitialiser = tk.Button(
     racine, text="Réinitialiser", command=initialisation)
 bouton_demarrer = tk.Button(
-    racine, text="Démarrer la simulation", command=tours)
+    racine, text="Démarrer la simulation", command=demarrer)
 bouton_arreter = tk.Button(
     racine, text="Arrêter/relancer la simulation", command=arreter)
 bouton_sauvegarder = tk.Button(
