@@ -672,22 +672,19 @@ def tours():
         couleurCases(configuration_courante)
 
         cpt_tours += 1
-    # else:
-
-    # canevas.after(30, tours())
-
-    # return
+        canevas.after(30, tours)
+        return
 
 
 def arreter():
-    """Arrêter la simulutation ou la relancer"""
+    """Arrêter la simulation ou la relancer"""
 
     global est_arrete
 
     if est_arrete is False:
         est_arrete = True
     else:
-        est_arrete is False
+        est_arrete = False
         tours()
 
 ############################################
