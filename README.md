@@ -24,9 +24,9 @@ https://github.com/uvsq22102239/projet_proie_predateur
 # Notions liés au fonctionnement du projet essentielles à la compréhension de celui-ci:
 
 
-### Dans ce projet chaque case de la grille est associée à un tuple qui définit la nature de la case ainsi que ses paramètres associés. Ce tuple est définit selon trois indices principaux:
+### Dans ce projet chaque case de la grille est associée à un tuple qui définit la nature de la case ainsi que ses paramètres associés. Ce tuple caractérisant l'identité des individus est définit selon trois indices principaux:
 
-### Le premier indice correspond à la nature de la case, 0 pour une case dite du "décor" ou de "l'environnement", 1 pour une case définissant une proie (possiblement un lapin) et 2 pour une case définissant un prédateur (possiblement un renard).
+### Le premier indice correspond à la nature de la case, soit son identifiant, 0 pour une case dite du "décor" ou de "l'environnement", 1 pour une case définissant une proie (possiblement un lapin) et 2 pour une case définissant un prédateur (possiblement un renard). Lorsqu'une proie et un prédateur sont sur la même case, cette indice passe à 3 avant de redevenir 2, ce qui indique que la proie a bien été mangée.
 
 ### Le deuxième indice correspond à l'âge et donc au temps de vie qu'il reste aux animaux de la simulation. Celui-ci est donc soit l'âge des individus étants des proies soit celui des individus étant des prédateurs (cf. premier indice).
 
@@ -43,5 +43,16 @@ https://github.com/uvsq22102239/projet_proie_predateur
 # Notions liées à l'apparition et à la reproduction des animaux sur la grille
 
 ### Au début de la simulation des proies et des prédateurs apparaissent aléatoirement sur la grille. Lorsque plusieurs individus de la même classe (proie ou prédateur) sont côte-à-côte sur la grille, un nouvel individu apparaît à proximité de ceux-ci : il s'agit de la reproduction et de la naissance d'un nouvel individu. Néanmoins, on rappelle qu'un prédateur doit avoir une certaine quantité d'énergie bien définie afin de se reproduire (cf. notions d'énergie) : ce n'est pas le cas pour les proies.
+
+#######################################################################################################
+# Notions liées à l'interface tkinter
+
+### La couleur verte représente le décor de la simulation, la couleur orange représente les prédateurs (les renards) et la couleur blanche représente les proies (les lapins).
+
+### Le bouton "Sauvegarder" qui enregistre la configuration de la simulation fonctionne, ce n'est pas le cas du bouton "Charger" du fait de nombreuses erreurs qui sont dues à une mauvaise adaptation au programme d'une fonction du cours.
+
+### Le bouton "Réinitialiser" réinitialise la simulation à partir de nouvelles variables aléatoires et le bouton "Fermer" ferme évidemment la fenêtre du programme.
+
+### Quant au bouton "Démarrer/relancer la simulation", il lance le programme de la simulation et l'affiche au niveau de la grille ou alors si la simulation était en pause, celui-ci la relance.
 
 

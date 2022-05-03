@@ -140,8 +140,7 @@ def arreter():
     if est_arrete is False:
         est_arrete = True
     else:
-        est_arrete = False
-        tours()
+        pass
 
 
 def sauvegarde():
@@ -719,9 +718,9 @@ initialisation()
 bouton_reinitialiser = tk.Button(
     racine, text="Réinitialiser", command=initialisation)
 bouton_demarrer = tk.Button(
-    racine, text="Démarrer la simulation", command=demarrer)
+    racine, text="Démarrer/relancer la simulation", command=demarrer)
 bouton_arreter = tk.Button(
-    racine, text="Arrêter/relancer la simulation", command=arreter)
+    racine, text="Mettre en pause la simulation", command=arreter)
 bouton_sauvegarder = tk.Button(
     racine, text="Sauvegarder", command=sauvegarde)
 bouton_charger = tk.Button(
