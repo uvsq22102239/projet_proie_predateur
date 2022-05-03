@@ -101,7 +101,8 @@ def couleurCases(matrice):
 
     for i in range(len(matrice)):
         for j in range(len(matrice)):
-            case = canevas.create_rectangle(coordonneesCase(i, j), fill="black")
+            case = canevas.create_rectangle(
+                coordonneesCase(i, j), fill="black")
             if matrice[i][j][0] == 0:
                 canevas.itemconfigure(case, fill="green yellow")
             elif matrice[i][j][0] == 1:
@@ -413,7 +414,8 @@ def ageProies(matrice):
         for j in range(len(matrice)):
             if matrice[i][j][0] == 1:
                 # si c'est une proie
-                matrice[i][j] = (matrice[i][j][0], (matrice[i][j][1] - 1), matrice[i][j][2])
+                matrice[i][j] = (matrice[i][j][0], (
+                    matrice[i][j][1] - 1), matrice[i][j][2])
                 # son âge diminue de 1
 
 
@@ -423,11 +425,13 @@ def ageEnergiePredateurs(matrice):
 
     for i in range(len(matrice)):
         for j in range(len(matrice)):
-            if matrice[i][j][0] == 2:       
+            if matrice[i][j][0] == 2:
                 # si c'est un prédateur
-                matrice[i][j] = (matrice[i][j][0], (matrice[i][j][1] - 1), matrice[i][j][2])
+                matrice[i][j] = (matrice[i][j][0], (
+                    matrice[i][j][1] - 1), matrice[i][j][2])
                 # son âge diminue de 1
-                matrice[i][j] = (matrice[i][j][0], matrice[i][j][1], (matrice[i][j][2]-1))
+                matrice[i][j] = (matrice[i][j][0], (
+                    matrice[i][j][1]), (matrice[i][j][2]-1))
                 # son énergie diminue de 1
 
 
@@ -452,7 +456,9 @@ def deplacementProies(matrice):
                         elif voisins[k] == 2:
                             i_arrivee = coord_voisins[k][0]
                             j_arrivee = coord_voisins[k][1]
-                            matrice[i_arrivee][j_arrivee] = (3, matrice[i_arrivee][j_arrivee][1], matrice[i_arrivee][j_arrivee][2])
+                            matrice[i_arrivee][j_arrivee] = (
+                                3, (matrice[i_arrivee][j_arrivee][1]), (
+                                    matrice[i_arrivee][j_arrivee][2]))
                             matrice[i][j] = (0, 0, 0)
 
     return matrice
@@ -479,7 +485,8 @@ def deplacementPredateurs(matrice):
                         elif voisins[k] == 1:
                             i_arrivee = coord_voisins[k][0]
                             j_arrivee = coord_voisins[k][1]
-                            matrice[i_arrivee][j_arrivee] = (3, matrice[i][j][1], matrice[i][j][2])
+                            matrice[i_arrivee][j_arrivee] = (
+                                3, (matrice[i][j][1]), matrice[i][j][2])
                             matrice[i][j] = (0, 0, 0)
 
     return matrice
@@ -489,43 +496,48 @@ def reproductionProies(matrice):
     """ Si 2 proies sont à côté, alors elles se reproduisent
     (on décide que les proies ne peuvent se reproduire au
     maximum qu'une seule fois par tour)"""
-    
-    matrice_proies = matriceProies(matrice)
+
+    mat_proies = matriceProies(matrice)
 
     # On parcourt notre matrice contenant les informations
     # des positions des proies puis l'on regarde si une proie
     # est à coté d'une autre ; si c'est le cas, elles se reproduisent
 
-    for i in range(len(matrice_proies)):
-        for j in range(len(matrice_proies)):
-            if matrice_proies[i][j] == (1, 0):
+    for i in range(len(mat_proies)):
+        for j in range(len(mat_proies)):
+            if mat_proies[i][j] == (1, 0):
                 # Si c'est une proie
-                voisins = voisinage(i, j, matrice_proies)
+                voisins = voisinage(i, j, mat_proies)
                 voisins_vide = voisinage(i, j, matrice)
                 if (1 in voisins) and (0 in voisins_vide):
                     # Si la proie est à côté d'une autre proie
                     # et qu'il y a une case vide pour la naissance
                     verif_naissance = 0
-                    while matrice_proies[i][j] == (1, 0):
+                    while mat_proies[i][j] == (1, 0):
                         # Tant que la proie ne s'est pas reproduit
                         h = rd.randint(0, (len(voisins)-1))
                         if voisins[h] == 1:
-                        # Si un voisin pris au hasard est une proie, il y a reproduction
-                            matrice_proies[i][j] = (0, 0)
-                        # La proie ne peut plus se reproduire pendant ce tour          
+                            # Si un voisin pris au hasard est une proie,
+                            # il y a reproduction
+                            mat_proies[i][j] = (0, 0)
+                            # La proie ne peut plus se reproduire
+                            # pendant ce tour
                             coord_pro = coordonneesVoisins(i, j, matrice)
-                            matrice_proies[coord_pro[h][0]][coord_pro[h][1]] = (0, 0)
+                            mat_proies[coord_pro[h][0]][coord_pro[h][1]] = (
+                                0, 0)
                             while verif_naissance == 0:
-                                # Tant qu'il n'y a pas eu la naissance 
+                                # Tant qu'il n'y a pas eu la naissance
                                 k = rd.randint(0, (len(voisins_vide)-1))
                                 if voisins_vide[k] == 0:
                                     # Si la case choisie au hasard est vide
-                                    identiteProies(matrice, coord_pro[k][0], coord_pro[k][1])
-                                    # matrice[coord_pro[k][0]][coord_pro[k][1]] = (1, A_PRO)
+                                    identiteProies(
+                                        matrice, coord_pro[k][0], (
+                                            coord_pro[k][1]))
+                                    # matrice[coord_pro[k][0]][coord_pro[k][1]]
+                                    # = (1, A_PRO)
                                     verif_naissance = 1
 
     return matrice
-
 
 
 def reproductionPredateurs(matrice):
@@ -544,7 +556,7 @@ def reproductionPredateurs(matrice):
                 # Si c'est un prédateur
                 voisins = voisinage(i, j, matrice_pred)
                 voisins_vide = voisinage(i, j, matrice)
-                if (1 in voisins) and (0 in voisins_vide):        
+                if (1 in voisins) and (0 in voisins_vide):
                     # Si le prédateur est à côté d'un autre prédateur
                     # et qu'il y a une case vide pour la naissance
                     verif_naissance = 0
@@ -558,13 +570,16 @@ def reproductionPredateurs(matrice):
                             # Le prédateur ne peut plus se
                             # reproduire pendant ce tour
                             coord_pro = coordonneesVoisins(i, j, matrice)
-                            matrice_pred[coord_pro[h][0]][coord_pro[h][1]] = (0, 0, 0)
+                            matrice_pred[coord_pro[h][0]][coord_pro[h][1]] = (
+                                0, 0, 0)
                             while verif_naissance == 0:
-                                # Tant qu'il n'y a pas eu la naissance 
+                                # Tant qu'il n'y a pas eu la naissance
                                 k = rd.randint(0, (len(voisins_vide)-1))
                                 if voisins_vide[k] == 0:
                                     # Si la case choisie au hasard est vide
-                                    identitePredateurs(matrice, coord_pro[k][0], coord_pro[k][1])
+                                    identitePredateurs(
+                                        matrice, coord_pro[k][0], (
+                                            coord_pro[k][1]))
                                     verif_naissance = 1
 
     return matrice
@@ -579,7 +594,8 @@ def predation(matrice):
             if matrice[i][j][0] == 3:
                 # Si une proie et un prédateur se
                 # retrouvent sur la même case
-                matrice[i][j] = (2, matrice[i][j][1], (matrice[i][j][2] + MIAM))
+                matrice[i][j] = (2, matrice[i][j][1], (
+                    matrice[i][j][2] + MIAM))
 
     return matrice
 
@@ -591,11 +607,12 @@ def mortProies(matrice):
 
     for i in range(len(matrice)):
         for j in range(len(matrice)):
-            if matrice[i][j][0] == 1 and matrice[i][j][1] == 0: 
+            if matrice[i][j][0] == 1 and matrice[i][j][1] == 0:
                 # si c'est une proie et
                 # qu'elle est trop âgée
-                matrice[i][j] = (0,0,0) #devient une case du décor
-    
+                matrice[i][j] = (0, 0, 0)
+                # devient une case du décor
+
     return matrice
 
 
@@ -622,19 +639,18 @@ def mortPrédateurs(matrice):
 
 
 def tours():
-    """Fonction qui gère les tours et les conditions associées à ceux-ci en appelant toutes
-    les fonctions qui gèrent les variations d'états liés aux tours"""
+    """Fonction qui gère les tours et les conditions associées
+    à ceux-ci en appelant toutes les fonctions qui gèrent les
+    variations d'états liés aux tours"""
 
     global est_arrete
     global cpt_tours
     global configuration_courante
 
-
-    if est_arrete == False :
+    if est_arrete is False:
         if cpt_tours == 0:
             apparitionProies(configuration_courante, N_PRO)
             apparitionPredateurs(configuration_courante, N_PRE)
-
 
         deplacementProies(configuration_courante)
         predation(configuration_courante)
@@ -659,7 +675,7 @@ def tours():
     # else:
 
     # canevas.after(30, tours())
-    
+
     # return
 
 
@@ -688,15 +704,22 @@ configuration_courante = creationMatrice(NB_CASES)
 # Création des widgets
 
 
-canevas = tk.Canvas(racine, height=HAUTEUR_CANEVAS, width=LARGEUR_CANEVAS, bg='white')
+canevas = tk.Canvas(
+    racine, height=HAUTEUR_CANEVAS, width=LARGEUR_CANEVAS, bg='white')
 initialisation()
 
-bouton_reinitialiser = tk.Button(racine, text="Réinitialiser", command=initialisation)
-bouton_demarrer = tk.Button(racine, text="Démarrer la simulation", command=tours)
-bouton_arreter = tk.Button(racine, text="Arrêter/relancer la simulation", command=arreter)
-bouton_sauvegarder = tk.Button(racine, text="Sauvegarder", command=sauvegarde)
-bouton_charger = tk.Button(racine, text="Charger", command=charger_gestion_bouton)
-bouton_fermer_fenetre = tk.Button(text="Fermer", command=racine.destroy)
+bouton_reinitialiser = tk.Button(
+    racine, text="Réinitialiser", command=initialisation)
+bouton_demarrer = tk.Button(
+    racine, text="Démarrer la simulation", command=tours)
+bouton_arreter = tk.Button(
+    racine, text="Arrêter/relancer la simulation", command=arreter)
+bouton_sauvegarder = tk.Button(
+    racine, text="Sauvegarder", command=sauvegarde)
+bouton_charger = tk.Button(
+    racine, text="Charger", command=charger_gestion_bouton)
+bouton_fermer_fenetre = tk.Button(
+    racine, text="Fermer", command=racine.destroy)
 
 
 ############################################
