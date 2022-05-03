@@ -19,7 +19,7 @@
 ############################################
 
 import tkinter as tk
-
+import pickle
 import random as rd
 
 ############################################
@@ -144,57 +144,28 @@ def arreter():
 
 
 def sauvegarde():
-    """Sauvegarde la configuration actuelle de la grille correspondant à la
-    simulation et la taille de celle-ci dans le fichier sauvegarde.txt"""
+    """Sauvegarde la configuration actuelle de la grille au format binaire avec pickle"""
 
-    # vérifier que ça sauvegarde bien les modif des autres fonctions
-    # et que tout fonctionne + load
-    # fonction récupéré du cours de LSIN200N et adaptée au programme
+    #Méthode pickle récupérée en ligne sur la documentation correspondante
 
-    fic = open("sauvegarde.txt", "w")
-    fic.write(str(NB_CASES) + "\n")
-    for i in range(NB_CASES):
-        for j in range(NB_CASES):
-            fic.write(str(configuration_courante[i][j]) + "\n")
-    fic.close()
+    data = configuration_courante
+    with open('data.pickle', 'wb') as f:
+        pickle.dump(data, f)
 
 
 def charger():
-    """ Lit la configuration sauvegardée et la retourne
-    si elle a la même valeur NB_CASES que la configuration
-    courante, sinon retourne configuration vide"""
-    # fonction récupérée du cours de LSIN200N et adaptée au programme
-
-    fic = open("sauvegarde.txt", "r")
-    config = [[0 for i in range(NB_CASES+3)] for j in range(NB_CASES+3)]
-    # à mieux adapter au programme
-    ligne = fic.readline()
-    n = int(ligne)
-    if n != NB_CASES:
-        fic.close()
-        return config
-    i = j = 1
-    for ligne in fic:
-        config[i][j] = int(ligne)
-        # erreur de int à solutionner
-        j += 1
-        if j == NB_CASES + 1:
-            j = 1
-            i += 1
-    fic.close()
-    return config
-
-
-def charger_gestion_bouton(matrice):
     """Modifie la configuration courante à partir de la
-    configuration sauvegardée"""
-    # fonction récupérée du cours de LSIN200N et adaptée au programme
-    # voir sinon avec configuration_courante et global
+    configuration sauvegardée au format binaire avec pickle"""
+    
+    #Méthode pickle récupérée en ligne sur la documentation correspondante
 
-    for i in range(len(matrice)):
-        for j in range(len(matrice)):
-            matrice[i][j] = charger()
-    tours()
+    global configuration_courante
+    with open('data.pickle', 'rb') as f:
+        data = pickle.load(f)
+    print(data)
+    configuration_courante = data
+    couleurCases(configuration_courante)
+
 
 
 def voisinage(i, j, matrice):
@@ -724,7 +695,7 @@ bouton_arreter = tk.Button(
 bouton_sauvegarder = tk.Button(
     racine, text="Sauvegarder", command=sauvegarde)
 bouton_charger = tk.Button(
-    racine, text="Charger", command=charger_gestion_bouton)
+    racine, text="Charger", command=charger)
 bouton_fermer_fenetre = tk.Button(
     racine, text="Fermer", command=racine.destroy)
 

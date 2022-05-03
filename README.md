@@ -49,7 +49,7 @@ https://github.com/uvsq22102239/projet_proie_predateur
 
 ### La couleur verte représente le décor de la simulation, la couleur orange représente les prédateurs (les renards) et la couleur blanche représente les proies (les lapins).
 
-### Le bouton "Sauvegarder" qui enregistre la configuration de la simulation fonctionne, ce n'est pas le cas du bouton "Charger" du fait de nombreuses erreurs qui sont dues à une mauvaise adaptation au programme d'une fonction du cours.
+### Le bouton "Sauvegarder" enregistre la configuration de la matrice correspondante à la simulation au format binaire avec pickle et le bouton "Charger" lit ce fichier et met à jour la configuration de la matrice par rapport à celle qui est enregistrée.
 
 ### Le bouton "Réinitialiser" réinitialise la simulation à partir de nouvelles variables aléatoires et le bouton "Fermer" ferme évidemment la fenêtre du programme.
 
