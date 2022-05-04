@@ -33,15 +33,29 @@ NB_CASES = 30
 
 N_PRO = 30
 # nombre de proies présentes avant le début de la simulation
+
 N_PRE = 20
-# nombre de prédateurs disposés aléatoirement sur la grille au début
-# de la simulation
+# nombre de prédateurs disposés aléatoirement sur la grille
+# au début de la simulation
+
 F_PRO = 0
 # nombre de proies apparaissant aléatoirement à chaque tour
-A_PRO = 6
-# durée de vie des proies
+# constante non utilisée car nous semble inutile
+
+A_PRO = 5
+# durée de vie des proies (le même pour toutes les proies)
+A_PRO_MIN = 3
+# durée de vie minimum d'une proie
+A_PRO_MAX = 7
+# durée de vie maximum d'une proie
+
 A_PRE = 15
 # durée de vie des prédateurs
+A_PRE_MIN = 12
+# durée de vie minimum d'un prédateur
+A_PRE_MAX = 18
+# durée de vie maximum d'un prédateur
+
 E_PRE = 10
 # énergie que dispose un prédateur au début de sa vie
 MIAM = 4
@@ -144,9 +158,10 @@ def arreter():
 
 
 def sauvegarde():
-    """Sauvegarde la configuration actuelle de la grille au format binaire avec pickle"""
+    """Sauvegarde la configuration actuelle de la grille au
+    format binaire avec pickle"""
 
-    #Méthode pickle récupérée en ligne sur la documentation correspondante
+    # Méthode pickle récupérée en ligne sur la documentation correspondante
 
     data = configuration_courante
     with open('data.pickle', 'wb') as f:
@@ -156,8 +171,8 @@ def sauvegarde():
 def charger():
     """Modifie la configuration courante à partir de la
     configuration sauvegardée au format binaire avec pickle"""
-    
-    #Méthode pickle récupérée en ligne sur la documentation correspondante
+
+    # Méthode pickle récupérée en ligne sur la documentation correspondante
 
     global configuration_courante
     with open('data.pickle', 'rb') as f:
@@ -165,7 +180,6 @@ def charger():
     print(data)
     configuration_courante = data
     couleurCases(configuration_courante)
-
 
 
 def voisinage(i, j, matrice):
@@ -384,7 +398,13 @@ def identiteProies(matrice, x, y):
     """ Remplit la case de la matrice par le tuple correspondant à
     l'identité de la proie (son identifiant et son âge)"""
 
-    matrice[x][y] = (1, A_PRO, 0)
+    # Si on veut que toutes les proies aient le même âge:
+    # matrice[x][y] = (1, A_PRO, 0)
+
+    # Si les proies ont un âge aléatoire:
+    # (leur âge est compris entre A_PRO_MIN et A_PRO_MAX)
+    age = rd.randint(A_PRO_MIN, A_PRO_MAX)
+    matrice[x][y] = (1, age, 0)
 
     return
 
@@ -393,7 +413,13 @@ def identitePredateurs(matrice, x, y):
     """ Remplit la case de la matrice par le tuple correspondant à
     l'identité du prédateur (son identifiant, son âge et son énergie)"""
 
-    matrice[x][y] = (2, A_PRE, E_PRE)
+    # Si on veut que tous les prédateurs aient le même âge:
+    # matrice[x][y] = (2, A_PRE, E_PRE)
+
+    # Si les prédateurs ont un âge aléatoire:
+    # (leur âge est compris entre A_PRE_MIN et A_PRE_MAX)
+    age = rd.randint(A_PRE_MIN, A_PRE_MAX)   
+    matrice[x][y] = (2, age, E_PRE)
 
     return
 
