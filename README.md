@@ -1,7 +1,7 @@
 #######################################################################################################
 # groupe LDDBI L1
-# Lucas AUCLAIR 22102239
-# Camille LE CORRE 22101284
+# Lucas AUCLAIR 22102239 Responsable GitHub
+# Camille LE CORRE 22101284 Responsable Mise en Forme
 # Nikita Vershynin 22101104
 
 

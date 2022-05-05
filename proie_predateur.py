@@ -84,7 +84,7 @@ cpt_tours = 0
 
 
 def creationMatrice(n):
-    """ Créér une matrice carrée de taille n contenant un tuple
+    """ Crée une matrice carrée de taille n contenant un tuple
     de 3 valeurs (qu'on initialise à 0)"""
 
     return [[(0, 0, 0)]*n for i in range(n)]
@@ -147,7 +147,7 @@ def demarrer():
 
 
 def arreter():
-    """Arrêter la simulation ou la relancer"""
+    """Arrête la simulation ou la relance"""
 
     global est_arrete
 
