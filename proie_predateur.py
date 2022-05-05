@@ -246,6 +246,7 @@ def voisinage(i, j, matrice):
 def coordonneesVoisins(i, j, matrice):
     """ Créer une liste contenant les coordonnées des cases
     voisines d'une case"""
+
     # l'ordre des voisins dans la liste est défini de gauche à droite
     # puis de haut en bas
 
@@ -390,7 +391,11 @@ def apparitionPredateurs(matrice, n):
 
 def naissanceAleatoireProies():
     """ Fait apparaître F_PRO proies aléatoirement (à chaque début de tour)"""
-    # on considère cette fonction inutile, à voir si on la fait ou pas
+    # on considère cette fonction inutile car la fonction apparitionProies
+    # fait déjà apparaître un certain nombre de proies aléatoirement sur la
+    # grille avant le début de la simulation. Ensuite, des nouvelles proies
+    # apparaissent seulement suite à leur reproduction, car cela se
+    # rapproche plus de la réalité
     pass
 
 
@@ -418,7 +423,7 @@ def identitePredateurs(matrice, x, y):
 
     # Si les prédateurs ont un âge aléatoire:
     # (leur âge est compris entre A_PRE_MIN et A_PRE_MAX)
-    age = rd.randint(A_PRE_MIN, A_PRE_MAX)   
+    age = rd.randint(A_PRE_MIN, A_PRE_MAX)
     matrice[x][y] = (2, age, E_PRE)
 
     return
@@ -568,6 +573,7 @@ def reproductionPredateurs(matrice):
     # On parcourt notre matrice contenant les informations des
     # positions des proies puis l'on regarde si une proie est à
     # coté d'une autre ; si c'est le cas, elles se reproduisent
+
     for i in range(len(matrice_pred)):
         for j in range(len(matrice_pred)):
             if matrice_pred[i][j] == (1, 0, 0):
@@ -680,7 +686,7 @@ def tours():
         reproductionProies(configuration_courante)
         reproductionPredateurs(configuration_courante)
         # pas besoin de rappeler la fonction prédation car
-        # les naissances se font sur les cases vides
+        # les naissances se font sur des cases vides
         ageProies(configuration_courante)
         ageEnergiePredateurs(configuration_courante)
 
