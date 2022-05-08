@@ -2,7 +2,7 @@
 # groupe LDDBI L1
 # Lucas AUCLAIR
 # Camille LE CORRE
-# Nikita Vershynin
+# Nikita VERSHYNIN
 
 
 # Projet informatique destiné à la création d'un système
@@ -354,8 +354,7 @@ def matricePredateursEnergie(matrice):
 
 
 def apparitionProies(matrice, n):
-    """ Fait apparaître n proies aléatoirement dans la matrice
-    (avant le 1er tour)"""
+    """ Fait apparaître n proies aléatoirement dans la matrice"""
 
     cpt = 0
 
@@ -372,8 +371,7 @@ def apparitionProies(matrice, n):
 
 
 def apparitionPredateurs(matrice, n):
-    """ Fait apparaître n prédateurs aléatoirement dans la matrice
-    (au début du 1er tour)"""
+    """ Fait apparaître n prédateurs aléatoirement dans la matrice"""
 
     cpt = 0
 
@@ -649,7 +647,7 @@ def mortPrédateurs(matrice):
     for i in range(len(matrice)):
         for j in range(len(matrice)):
             if matrice[i][j][0] == 2:
-                # s'il s'agit un prédateur
+                # s'il s'agit d'un prédateur
                 if matrice[i][j][1] == 0:
                     # s'il est trop âgé
                     matrice[i][j] = (0, 0, 0)
